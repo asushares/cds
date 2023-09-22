@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/sdhealthconnect/leap-cds/schemas/patient-consent-consult-hook-request.schema.json",
+  "title": "Patient Consent Consult Hook Request",
+  "description": "Patient Consent Consult Hook Request",
+  "definitions": {
+    "system-value": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "system": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["value"]
+    },
+    "system-code": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "system": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "required": ["system", "code"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "hook": {
+      "type": "string",
+      "pattern": "patient-consent-consult"
+    },
+    "hookInstance": {
+      "description": "UUID for this hook call",
+      "type": "string"
+    },
+    "context": {
+      "description": "Context where the consent decision is needed",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actor": {
+          "description": "identifiers of the actor",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/system-value"
+          }
+        },
+        "purposeOfUse": {
+          "description": "purpose of use",
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "category": {
+          "description": "categories of applicable consents to the workflow context",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/system-code"
+          }
+        },
+        "patientId": {
+          "description": "identity of the patient whose consent is being considered",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/system-value"
+          }
+        },
+        "class": {
+          "description": "content classes being requested",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/system-code"
+          }
+        },
+        "content": {
+          "description": "content being requested",
+          "type": "object",
+          "properties": {
+            "entry": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "resource": {
+                    "type": "object",
+                    "properties": {
+                      "resourceType": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["resourceType"]
+                  }
+                },
+                "required": ["resource"]
+              }
+            },
+            "resourceType": {
+              "type": "string",
+              "pattern": "Bundle"
+            }
+          },
+          "required": ["entry", "resourceType"]
+        }
+      },
+      "required": ["patientId", "actor"]
+    }
+  },
+  "required": ["hook", "hookInstance", "context"]
+}

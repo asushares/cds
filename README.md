@@ -1,6 +1,6 @@
 # ASU SHARES CDS Hooks Services
 
-ASU SHARES FHIR Consent CDS Hooks services.
+ASU SHARES Consent CDS Hooks services for FHIR R5.
 
 ## Running From Source
 

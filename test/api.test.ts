@@ -1,4 +1,5 @@
 // Author: Preston Lee
+
 const request = require('supertest');
 // const assert = require('assert');
 // import request from 'supertest';
@@ -6,12 +7,11 @@ const request = require('supertest');
 // import supertest from "@types/supertest";
 
 import app from '../src/api';
-
+import {PatientConsentHookRequest} from '../src/patient_consent_hook_request';
 
 describe('GET /', () => {
 
-    test('it should return a valid JSON document', done => {
-        expect(42).toBe(42);
+    test('it should return a JSON status document', done => {
         request(app)
             .get('/')
             .expect('Content-Type', 'application/json; charset=utf-8')
@@ -19,12 +19,12 @@ describe('GET /', () => {
                 if (!res.body.message) {
                     throw new Error("Document didn't include expected properties");
                 }
+                if (res.body.datetime <= 0) {
+                    throw new Error("Timestamp field 'datetime' not present");
+                }
             })
             .expect(200, done);
     });
-
-
-
 
 });
 
@@ -40,7 +40,7 @@ describe('GET /cds-services', () => {
         request(app)
             .get('/cds-services')
             .expect((res: any) => {
-                console.log(res.body);
+                // console.log(res.body);
                 if (res.body.services.length == 0) {
                     throw new Error("No services provided!");
                 } else {
@@ -53,6 +53,30 @@ describe('GET /cds-services', () => {
                 }
             })
             .expect(200, done);
+    });
+
+});
+
+describe('POST /cds-services/patient-consent-consult', () => {
+
+    test('it should not accept invalid JSON', done => {
+        request(app)
+            .post('/cds-services/patient-consent-consult')
+            .send('something clearly not going to parse as JSON')
+            .expect((res: any) => {
+                // console.log(res.aoeu);
+            })
+            .expect(400, done);
+    });
+
+    test('it should not accept', done => {
+        let data = new PatientConsentHookRequest();
+        data.context.patientId =[{value: '2321'}];
+        data.context.category = [{system: 'http://terminology.hl7.org/CodeSystem/consentscope', code: 'patient-privacy'}];
+        request(app)
+            .post('/cds-services/patient-consent-consult')
+            .send(data)
+            .expect(200, done)
     });
 
 });

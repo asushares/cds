@@ -3,15 +3,29 @@
 
 import fs from 'fs';
 import express, { json } from "express";
+import { PatientConsentHookValidator } from './patient_consent_hook_validator';
+import { PatientConsentHookRequest } from './patient_consent_hook_request';
 import axios from 'axios';
+import { PatientConsentHookProcessor } from './patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
+import dotenv from 'dotenv';
+import { BundleEntry, Consent } from 'fhir/r5';
+
+dotenv.config();
+
 const app = express();
+// Errors are not helpful to the user when doing this.
+app.use(express.json());
+
 
 // Root URL
 app.get('/', (req, res) => {
-    res.json({ message: "This is a CDS Hooks server that is accessed programmatically via HTTP REST calls. You probably meant to call the /cds-services discovery endpoint instead." });
+    res.json({
+        message: "This is a CDS Hooks server that is accessed programmatically via HTTP REST calls. You probably meant to call the /cds-services discovery endpoint instead.",
+        datetime: Date.now()
+    });
 });
 
 // The CDS Hooks discovery endpoint.
@@ -25,12 +39,53 @@ app.get('/cds-services', (req, res) => {
                 "description": "ASU SHARES consent decision services enable queries about the patient consents applicable to a particular workflow or exchange context.",
                 "id": "patient-consent-consult",
                 "prefetch": { "patient": "Patient/{{context.patientId}}" },
-                "usageRequirements" :  "Access to the FHIR Patient data potentially subject to consent policies."
+                "usageRequirements": "Access to the FHIR Patient data potentially subject to consent policies."
             }]
     }
         ;
     res.json(json);
 
+});
+
+app.post('/cds-services/patient-consent-consult', (req, res) => {
+    try {
+        // let json = JSON.parse(req.body);
+
+        const results = PatientConsentHookValidator.validateRequest(req.body);
+        if (results) {
+            res.status(400).json(results);
+        } else {
+            let data: PatientConsentHookRequest = req.body;
+            let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
+            let categories = data.context.category || [];
+            let content = data.context.content;
+
+            let proc = new PatientConsentHookProcessor();
+            try {
+                proc.findConsents(subjects, categories).then(resp => {
+                    const entries: BundleEntry<Consent>[] = resp.data.entry!;
+                    // console.log(JSON.stringify(entries.map(n => { n.resource })));
+                    let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                    if(content) {
+                        proc.applyConsents(consents, content);
+                    } else {
+                        console.log(JSON.stringify(consents));
+                        // proc.applyConsents(consents, content);
+                    }
+                    // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                });
+
+            } catch (e) {
+                res.status(502).send({ message: e });
+            }
+            // console.log(data.context);
+            res.status(200).send({ all: 'good' });
+        }
+    } catch (error) {
+        console.log('SNTHETNUHC');
+        res.status(400).json({ message: 'Request body must be a valid JSON document.' });
+
+    }
 });
 
 export default app;

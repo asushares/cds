@@ -1,0 +1,3 @@
+const patientIds = req.body.context.patientId;
+const category = req.body.context.category || [];
+const content = req.body.context.content;

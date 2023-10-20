@@ -1,4 +1,9 @@
 .dockerignore
-.env
+.drone.yml
+.env*
 .git
 .gitignore
+
+build/
+
+README.md

@@ -1,0 +1,12 @@
+{
+    "$schema": "../src/schemas/patient-consent-consult-hook-request.schema.json",
+	"hook": "patient-consent-consult",
+	"hookInstance": "patient-consent-consult",
+	"context": {
+		"actor": [{"value": "Organization/128"}],
+		"purposeOfUse": [],
+		"category": [],
+		"patientId": [{"value": "Patient/2321"}],
+		"class": []
+	}
+}

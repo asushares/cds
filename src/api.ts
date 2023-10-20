@@ -16,9 +16,9 @@ import { BundleEntry, Consent } from 'fhir/r5';
 dotenv.config();
 
 const app = express();
+// 
 // Errors are not helpful to the user when doing this.
 app.use(express.json());
-
 
 // Root URL
 app.get('/', (req, res) => {
@@ -48,44 +48,48 @@ app.get('/cds-services', (req, res) => {
 });
 
 app.post('/cds-services/patient-consent-consult', (req, res) => {
-    try {
-        // let json = JSON.parse(req.body);
+    // try {
+    console.log(req.body);
 
-        const results = PatientConsentHookValidator.validateRequest(req.body);
-        if (results) {
-            res.status(400).json(results);
-        } else {
-            let data: PatientConsentHookRequest = req.body;
-            let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
-            let categories = data.context.category || [];
-            let content = data.context.content;
+    // let json = JSON.parse(req.body); // Will throw an error if not valid JSON.
 
-            let proc = new PatientConsentHookProcessor();
-            try {
-                proc.findConsents(subjects, categories).then(resp => {
-                    const entries: BundleEntry<Consent>[] = resp.data.entry!;
-                    // console.log(JSON.stringify(entries.map(n => { n.resource })));
-                    let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
-                    if(content) {
-                        proc.applyConsents(consents, content);
-                    } else {
-                        console.log(JSON.stringify(consents));
-                        // proc.applyConsents(consents, content);
-                    }
-                    // console.log(JSON.stringify(entries.map(n => { n.resource! })));
-                });
+    const results = PatientConsentHookValidator.validateRequest(req.body);
+    if (results) {
+        res.status(400).json(results);
+    } else {
+        let data: PatientConsentHookRequest = req.body;
+        let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
+        let categories = data.context.category || [];
+        let content = data.context.content;
 
-            } catch (e) {
-                res.status(502).send({ message: e });
-            }
-            // console.log(data.context);
-            res.status(200).send({ all: 'good' });
+        let proc = new PatientConsentHookProcessor();
+        try {
+            proc.findConsents(subjects, categories).then(resp => {
+                const entries: BundleEntry<Consent>[] = resp.data.entry!;
+                let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                console.log(JSON.stringify(consents));
+                // if (content) {
+                //     proc.applyConsents(consents, content);
+                //     // TODO @preston Implement!
+                //     res.status(200).send({code_path: 'not_implemented'});
+                // } else {
+                    // No data provided, so just make a decision and return a card.
+                    let card = proc.process(consents, data);
+                    res.status(200).send(card);
+                // }
+                // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+            });
+
+        } catch (e) {
+            res.status(502).send({ message: e });
         }
-    } catch (error) {
-        console.log('SNTHETNUHC');
-        res.status(400).json({ message: 'Request body must be a valid JSON document.' });
-
+        // console.log(data.context);
+        // res.status(200).send({ all: 'good' });
     }
+    // } catch (error) {
+    // console.log(JSON.stringify(error));
+    //     res.status(400).json({ message: 'Request body must be a valid JSON document.' });
+    // }
 });
 
 export default app;

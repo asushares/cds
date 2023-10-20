@@ -22,6 +22,13 @@ $ npm run test-watch # to automatically rerun tests upon code or test changes
 $ docker run -it --rm -p 3000:3000 asushares/cds:latest
 ```
 
+## Building
+
+```shell
+$ docker build -t asushares/cds:latest . # Local CPU architecture only
+$ docker buildx build --platform linux/arm64/v8,linux/amd64 -t asushares/cds:latest . --push # Multi-architecture
+```
+
 ## License
 
 Apache 2.0

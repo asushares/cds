@@ -1,31 +1,5 @@
 // Author: Preston Lee
 
-
-// let example = {
-//     "hook": "patient-consent-consult",
-//     "hookInstance": "1234",
-//     "context": {
-//         "patientId": [
-//             {
-//                 "system": "http://hl7.org/fhir/sid/us-medicare",
-//                 "value": "0000-000-0000"
-//             }
-//         ],
-//         "category": [
-//             {
-//                 "system": "http://terminology.hl7.org/CodeSystem/consentscope",
-//                 "code": "patient-privacy"
-//             }
-//         ],
-//         "actor": [
-//             {
-//                 "system": "test-system",
-//                 "value": "test-value"
-//             }
-//         ]
-//     }
-// }
-
 import { Bundle, BundleEntry, FhirResource } from 'fhir/r5';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -1,10 +1,11 @@
 # ASU SHARES CDS Hooks Services
 
-ASU SHARES Consent CDS Hooks services for FHIR R5.
+ASU SHARES Consent CDS Hooks services for FHIR R5. You must have a backend FHIR server, such as HAPI FHIR, available as well.  
 
 ## Running From Source
 
 ```shell
+$ npm i # to install dependencies
 $ npm run start # to run normally, or
 $ npm run watch # to automatically restart upon code changes
 ```
@@ -19,7 +20,7 @@ $ npm run test-watch # to automatically rerun tests upon code or test changes
 ## OCI/Docker/Podman Runtime
 
 ```shell
-$ docker run -it --rm -p 3000:3000 asushares/cds:latest
+$ docker run -it --rm -p 3000:3000 -e FHIR_BASE_URL=https://your_fhir_server_host asushares/cds:latest
 ```
 
 ## Building

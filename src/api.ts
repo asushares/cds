@@ -75,7 +75,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
                 // } else {
                     // No data provided, so just make a decision and return a card.
                     let card = proc.process(consents, data);
-                    res.status(200).send(card);
+                    res.status(200).send(JSON.stringify(card, null, "\t"));
                 // }
                 // console.log(JSON.stringify(entries.map(n => { n.resource! })));
             });

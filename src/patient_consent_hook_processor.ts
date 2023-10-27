@@ -8,6 +8,10 @@ import { Card } from './cards/card';
 import { NoConsentCard } from './cards/no_consent_card';
 import { DenyCard } from './cards/deny_card';
 import { PermitCard } from './cards/permit_card';
+import { AuditService } from './audit/audit_service';
+import { JSONPath } from 'jsonpath-plus';
+import { SensitivityRuleProcessor } from './sensitivity_rules/sensitivity_rule_processor';
+import { ConsentExtension } from './consent_extension';
 
 export class PatientConsentHookProcessor {
 
@@ -18,6 +22,8 @@ export class PatientConsentHookProcessor {
     }
 
     process(consents: Consent[], request: PatientConsentHookRequest,): Card {
+
+        // Find and determine the correct card type.
         const filtered = this.filterForApplicableConsents(consents);
         let card: Card = new NoConsentCard();
         if (filtered.length > 0) {
@@ -30,7 +36,7 @@ export class PatientConsentHookProcessor {
 
             }
             // console.log(results);
-            
+
             let permits = results.filter(sr => { return sr == 'permit' });
             let denies = results.filter(sr => { return sr == 'deny' });
             // Any deny decision should trump all permit decisions.
@@ -43,6 +49,17 @@ export class PatientConsentHookProcessor {
             console.log("No applicable consent documents.");
 
         }
+
+        // Apply security labels
+        this.addSecurityLabels(consents, request, card);
+
+        // Create an AuditEvent with the results.
+        AuditService.create(consents, request, card).then(res => {
+            console.log("Created AuditEvent/" + res.data.id);
+        }, e => {
+            console.error('Failed to create AuditEvent: ' + e);
+
+        });
         return card;
     }
 
@@ -144,6 +161,24 @@ export class PatientConsentHookProcessor {
 
     applyConsents(consents: Consent[], content: Bundle) {
         console.log('CONSENTS: ' + JSON.stringify(consents));
+    }
+
+    addSecurityLabels(consents: Consent[], request: PatientConsentHookRequest, card: Card) {
+        if (request.context.content?.entry) { // If the request contains FHIR resources
+            // Find all Coding elements anywhere within the tree. It doesn't matter where.
+            let codings = JSONPath({ path: "$..coding", json: request.context.content.entry }).flat();
+            let rules = new SensitivityRuleProcessor().applicableRulesFor(codings);
+            card.extension = new ConsentExtension(request.context.content);
+            card.extension.decision = card.summary;
+            rules.forEach(r => {
+                // console.log("LABELS: ");
+                // console.log(r);
+                let ob = { id: SensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
+                card.extension?.obligations.push(ob);
+            });
+            // console.log(codings);
+
+        }
     }
 
 }

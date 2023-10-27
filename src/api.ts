@@ -5,7 +5,6 @@ import fs from 'fs';
 import express, { json } from "express";
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
 import { PatientConsentHookRequest } from './patient_consent_hook_request';
-import axios from 'axios';
 import { PatientConsentHookProcessor } from './patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
@@ -15,6 +14,10 @@ import { BundleEntry, Consent } from 'fhir/r5';
 
 dotenv.config();
 
+if(!process.env.FHIR_BASE_URL) {
+    console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
+    process.exit(1);
+}
 const app = express();
 // 
 // Errors are not helpful to the user when doing this.

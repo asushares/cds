@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm run build && npx node build/server.js",
         "build": "npx tsc && npm run copy-files",
-        "copy-files": "cp -R src/schemas build/schemas",
+        "copy-files": "cp -R src/data build/data && cp -R src/schemas build/schemas",
         "watch": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'npx ts-node src/server.ts'",
         "test": "jest",
         "test-watch": "nodemon --watch '{src,test}/**' --ext 'ts,json' --exec 'npx jest'"

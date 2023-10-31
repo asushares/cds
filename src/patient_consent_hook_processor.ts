@@ -53,6 +53,9 @@ export class PatientConsentHookProcessor {
         // Apply security labels
         this.addSecurityLabels(consents, request, card);
 
+        // Redact resources
+        this.redact(card);
+
         // Create an AuditEvent with the results.
         AuditService.create(consents, request, card).then(res => {
             console.log("Created AuditEvent/" + res.data.id);
@@ -147,17 +150,6 @@ export class PatientConsentHookProcessor {
         return axios.get<Bundle<Consent>>(url + query);
     }
 
-    // async queryConsents(url: string) {
-    //     let data = null;
-    //     await axios.get<Bundle<Consent>>(url).then(resp => {
-    //         // console.log(resp.data);
-    //         return resp.data;
-    //     }, e => {
-    //         throw new Error('Unexpected issue querying FHIR server for applicable Consent documents. Processing cannot proceed.');
-    //         // console.error(e);
-    //     });
-    //     return data;
-    // }
 
     applyConsents(consents: Consent[], content: Bundle) {
         console.log('CONSENTS: ' + JSON.stringify(consents));
@@ -166,18 +158,62 @@ export class PatientConsentHookProcessor {
     addSecurityLabels(consents: Consent[], request: PatientConsentHookRequest, card: Card) {
         if (request.context.content?.entry) { // If the request contains FHIR resources
             // Find all Coding elements anywhere within the tree. It doesn't matter where.
-            let codings = JSONPath({ path: "$..coding", json: request.context.content.entry }).flat();
-            let rules = new SensitivityRuleProcessor().applicableRulesFor(codings);
             card.extension = new ConsentExtension(request.context.content);
             card.extension.decision = card.summary;
-            rules.forEach(r => {
-                // console.log("LABELS: ");
-                // console.log(r);
-                let ob = { id: SensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
-                card.extension?.obligations.push(ob);
-            });
-            // console.log(codings);
+            if (card.extension.content?.entry) {
+                card.extension.content.entry.forEach(e => {
+                    if (e.resource) {
+                        let codings = JSONPath({ path: "$..coding", json: e.resource }).flat();
+                        let srp = new SensitivityRuleProcessor();
+                        let srp_rules = srp.applicableRulesFor(codings);
+                        // rp.applySecurityLabelsToResource(rules, )
+                        if (!e.resource.meta) {
+                            e.resource.meta = {};
+                        }
+                        if (!e.resource.meta.security) {
+                            e.resource.meta.security = [];
+                        }
+                        srp_rules.forEach(r => {
+                            // console.log("LABELS: ");
+                            // console.log(r);
+                            let ob = { id: SensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
+                            // r.labels.map(l => l.);
+                            card.extension?.obligations.push(ob);
+                            console.log('PUSHING');
+                            console.log(r.labels);
+                            // card.extension.
+                            r.labels.forEach(l => {
+                                e.resource?.meta?.security?.push(l);
+                            });
+                        });
+                        // console.log(codings);
+                    }
+                });
+            }
+        }
+    }
 
+    redact(card: Card) {
+        if (card.extension?.content?.entry) {
+            card.extension.content.entry = card.extension?.content?.entry.filter(e => {
+                let shouldRedact = false;
+                if (e.resource?.meta?.security) {
+
+                    card.extension?.obligations.forEach(o => {
+                        if (o.id.code == SensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == SensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
+                            o.parameters.codes.forEach(code => {
+                                e.resource!.meta!.security!.findIndex((c, i, all) => {
+                                    if (code.code == c.code && code.system == c.system) {
+                                        shouldRedact = true;
+                                    }
+                                });
+
+                            });
+                        }
+                    });
+                    return !shouldRedact;
+                }
+            })
         }
     }
 

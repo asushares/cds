@@ -2,7 +2,7 @@
 
 import { Coding } from "fhir/r5";
 
-export class SensitivityRule {
+export class Rule {
 
     id: string = '';
     basis: { system: string, code: string, display: string } = { system: '', code: '', display: '' };

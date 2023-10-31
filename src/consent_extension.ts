@@ -6,10 +6,12 @@ export class ConsentExtension {
 
     decision: 'CONSENT_PERMIT' | 'CONSENT_DENY' | 'NO_CONSENT' = 'NO_CONSENT';
     obligations: { id: { system: string, code: string }, parameters: { codes: Array<{ system: string, code: string }> } }[] = [];
-    // protected content: Bundle<FhirResource>;
+    content: Bundle<FhirResource> | null = null;
     basedOn: string = '';
 
-    constructor(public content: Bundle) {
-
+    constructor(requestContent: Bundle | null) {
+        if (requestContent) {
+            this.content = structuredClone(requestContent)
+        }
     }
 }

@@ -70,6 +70,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
             proc.findConsents(subjects, categories).then(resp => {
                 const entries: BundleEntry<Consent>[] = resp.data.entry!;
                 let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                console.log('Request consents:');
                 console.log(JSON.stringify(consents));
                 // if (content) {
                 //     proc.applyConsents(consents, content);

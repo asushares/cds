@@ -2,7 +2,6 @@
 
 import * as fs from 'fs';
 import path from 'path';
-import Ajv from 'ajv';
 import { Rule } from './rule';
 import { Coding } from 'fhir/r5';
 import { AbstractRuleProcessor } from './rule_processor';

@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import { Bundle, BundleEntry, FhirResource } from 'fhir/r5';
+import { Bundle } from 'fhir/r5';
 import { v4 as uuidv4 } from 'uuid';
 
 

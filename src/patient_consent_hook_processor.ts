@@ -3,7 +3,7 @@
 
 import axios from 'axios';
 import { PatientConsentHookRequest, SystemCode, SystemValue } from './patient_consent_hook_request';
-import { Bundle, Consent, ConsentProvision, FhirResource } from 'fhir/r5';
+import { Bundle, Consent, ConsentProvision } from 'fhir/r5';
 import { Card } from './cards/card';
 import { NoConsentCard } from './cards/no_consent_card';
 import { DenyCard } from './cards/deny_card';
@@ -198,7 +198,6 @@ export class PatientConsentHookProcessor {
             card.extension.content.entry = card.extension?.content?.entry.filter(e => {
                 let shouldRedact = false;
                 if (e.resource?.meta?.security) {
-
                     card.extension?.obligations.forEach(o => {
                         if (o.id.code == SensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == SensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
                             o.parameters.codes.forEach(code => {

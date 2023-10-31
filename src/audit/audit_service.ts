@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import { AuditEvent, Consent, Reference } from "fhir/r5";
+import { AuditEvent, Consent } from "fhir/r5";
 
 import axios from 'axios';
 import { PatientConsentHookRequest } from "../patient_consent_hook_request";
@@ -22,8 +22,7 @@ export class AuditService {
         if(request.context.content) {
             ae.contained = [request.context.content];
         }
-        console.log(ae);
-        
+        // console.log(ae);        
         return axios.post(process.env.FHIR_BASE_URL + '/AuditEvent', ae);
     }
 

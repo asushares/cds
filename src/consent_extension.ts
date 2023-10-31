@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import { Bundle, BundleEntry, FhirResource } from "fhir/r5"
+import { Bundle, FhirResource } from "fhir/r5"
 
 export class ConsentExtension {
 

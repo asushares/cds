@@ -1,6 +1,49 @@
-# ASU SHARES CDS Hooks Services
+# ASU SHARES FHIR Consent CDS Hooks Services
 
-ASU SHARES Consent CDS Hooks services for FHIR R5. You must have a backend FHIR server, such as HAPI FHIR, available as well.  
+The ASU SHARES FHIR Consent Service from [ASU SHARES](https://www.asushares.com) is a reference implementation providing FHIR-based healthcare data sharing determination decisions and content data redaction functions based on FHIR R5 and CDS Hooks v1 and v2. Long term, we intend to settle on FHIR R6 once the specification stabilizes.
+
+FHIR Consent Service is part of a U.S. National Institute of Health (NIH) project funded through August, 2028. Technical execution of the Arizona State University (ASU) "Substance use HeAlth REcord Sharing" (SHARES) grant is led by co-investigator Dr. Preston Lee at Arizona State University under principal investigator Dr. Adela Grando. See the [ASU SHARES Team](https://www.asushares.com/team) for a full list of stakeholders.
+
+At a high level, FHIR Consent Service:
+
+ - Loads a configurable set of content sensitivity rules and metadata. 
+ - Accepts REST invokations (based on the CDS Hooks request/response protocol) of a data sharing consent contexnt and optional FHIR bundle.
+ - Queries a FHIR backend server for Consent documents and determines which, if any, are applicable to the CDS invokation context.
+ - Informs the client (via FHIR ActCodes) on the nature of content sensitivity rules found to be pertinent to the request.
+ - Redact the optionally-provided FHIR bundle, when provided, based on all available sensitivity rule and applicable Consent information.
+
+# Running SHARES Consent Service Yourself with Docker/Podman/Kubernetes
+
+## Step 1: Run the CDS Service and FHIR backend
+
+### Option 1: Use your own R5 server
+If you have your own FHIR R5 server, either set the following environment variables or create a `.env` file with KEY=value definitions for the following:
+
+```bash
+FHIR_BASE_URL=https://your_fhir_server_url
+ORG_NAME=ASUSHARES
+ORG_URL=https://www.your_company_website.com
+```
+
+Then run the latest SHARES Consent Service build:
+
+```shell
+$ docker run -it --rm -p 3000:3000 asushares/cds:latest
+```
+
+### Option 2: Use our example HAPI server
+
+If you do not have a server, you may use the  must have a backend FHIR server, such as HAPI FHIR, available as well.  
+
+## Step 2: Load Seed Data
+
+TODO document!
+
+## Step 3: Build Your Consent Documents
+
+Consent documents in FHIR R5 are fairly different than in R4 and prior releases. They are generally more flexible in general -- e.g. they do not only apply to patients -- and the logical representation requires different considerations than prior implementations.
+
+We have also developed a UI for browsing and managing R5 Consent documents called [Consent Manager](https://github.com/asushares/consent-manager) that aims to fully support modeling of R5 Consent documents. See the project page for usage.
 
 ## Running From Source
 
@@ -17,11 +60,6 @@ $ npm run test # to run once, or
 $ npm run test-watch # to automatically rerun tests upon code or test changes
 ```
 
-## OCI/Docker/Podman Runtime
-
-```shell
-$ docker run -it --rm -p 3000:3000 -e FHIR_BASE_URL=https://your_fhir_server_host asushares/cds:latest
-```
 
 ## Building
 

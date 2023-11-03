@@ -3,7 +3,7 @@
 import { AuditEvent, Consent } from "fhir/r5";
 
 import axios from 'axios';
-import { PatientConsentHookRequest } from "../patient_consent_hook_request";
+import { PatientConsentHookRequest } from "../models/patient_consent_hook_request";
 import { Card } from "../models/cards/card";
 
 export class AuditService {

@@ -2,7 +2,7 @@
 
 
 import axios from 'axios';
-import { PatientConsentHookRequest, SystemCode, SystemValue } from '../patient_consent_hook_request';
+import { PatientConsentHookRequest, SystemCode, SystemValue } from '../models/patient_consent_hook_request';
 import { Bundle, Consent, ConsentProvision } from 'fhir/r5';
 import { Card } from '../models/cards/card';
 import { NoConsentCard } from '../models/cards/no_consent_card';

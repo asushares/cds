@@ -81,7 +81,18 @@ $ docker buildx build --platform linux/arm64/v8,linux/amd64 -t asushares/cds:lat
 
 TODO Write comprehensive examples of running each major use case.
 ```bash
+
+curl -H 'Accept: application/json' -H 'Content-Type: application/json' http://localhost:3000
+
+curl -H 'Accept: application/json' -H 'Content-Type: application/json' http://localhost:3000/cds-services
+
 curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-permit.json" http://localhost:3000/cds-services/patient-consent-consult
+
+curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-no-consent-found.json" http://localhost:3000/cds-services/patient-consent-consult
+
+curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-deny.json" http://localhost:3000/cds-services/patient-consent-consult
+
+
 ```
 
 ## License

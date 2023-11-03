@@ -4,7 +4,7 @@
 import fs from 'fs';
 import express, { json } from "express";
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
-import { PatientConsentHookRequest } from './patient_consent_hook_request';
+import { PatientConsentHookRequest } from './models/patient_consent_hook_request';
 import { CodeMatchingPatientConsentHookProcessor } from './patient_conest_conselt_hook_processors/code_matching_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
@@ -29,7 +29,8 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.json({
         message: "This is a CDS Hooks server that is accessed programmatically via HTTP REST calls. You probably meant to call the /cds-services discovery endpoint instead.",
-        datetime: Date.now()
+        datetime: Date.now(),
+        version: my_version
     });
 });
 

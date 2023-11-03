@@ -2,25 +2,21 @@
 
 
 import axios from 'axios';
-import { PatientConsentHookRequest, SystemCode, SystemValue } from './patient_consent_hook_request';
+import { PatientConsentHookRequest, SystemCode, SystemValue } from '../patient_consent_hook_request';
 import { Bundle, Consent, ConsentProvision } from 'fhir/r5';
-import { Card } from './cards/card';
-import { NoConsentCard } from './cards/no_consent_card';
-import { DenyCard } from './cards/deny_card';
-import { PermitCard } from './cards/permit_card';
-import { AuditService } from './audit/audit_service';
+import { Card } from '../models/cards/card';
+import { NoConsentCard } from '../models/cards/no_consent_card';
+import { DenyCard } from '../models/cards/deny_card';
+import { PermitCard } from '../models/cards/permit_card';
+import { AuditService } from '../audit/audit_service';
 import { JSONPath } from 'jsonpath-plus';
-import { SensitivityRuleProcessor } from './sensitivity_rules/sensitivity_rule_processor';
-import { ConsentExtension } from './consent_extension';
+import { CodeMatchingSensitivityRuleProcessor } from '../sensitivity_rules/code_matching_sensitivity_rule_processor';
+import { ConsentExtension } from '../models/consent_extension';
+import { AbstractPatientConsentConsultHookProcessor } from './abstract_patient_consent_consult_hook_processor';
 
-export class PatientConsentHookProcessor {
+export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientConsentConsultHookProcessor {
 
-    filterForApplicableConsents(consents: Consent[]) {
-        return consents.filter(c => { return c.status == 'active' })
-            .filter(c => { return !c.period?.start || (c.period?.start && new Date(c.period.start).valueOf() <= Date.now()) })
-            .filter(c => { return !c.period?.end || (c.period?.end && new Date(c.period.end).valueOf() >= Date.now()) })
-    }
-
+   
     process(consents: Consent[], request: PatientConsentHookRequest,): Card {
 
         // Find and determine the correct card type.
@@ -54,7 +50,7 @@ export class PatientConsentHookProcessor {
         this.addSecurityLabels(consents, request, card);
 
         // Redact resources
-        this.redact(card);
+        this.redactFromLabels(card);
 
         // Create an AuditEvent with the results.
         AuditService.create(consents, request, card).then(res => {
@@ -150,11 +146,6 @@ export class PatientConsentHookProcessor {
         return axios.get<Bundle<Consent>>(url + query);
     }
 
-
-    applyConsents(consents: Consent[], content: Bundle) {
-        console.log('CONSENTS: ' + JSON.stringify(consents));
-    }
-
     addSecurityLabels(consents: Consent[], request: PatientConsentHookRequest, card: Card) {
         if (request.context.content?.entry) { // If the request contains FHIR resources
             // Find all Coding elements anywhere within the tree. It doesn't matter where.
@@ -164,7 +155,7 @@ export class PatientConsentHookProcessor {
                 card.extension.content.entry.forEach(e => {
                     if (e.resource) {
                         let codings = JSONPath({ path: "$..coding", json: e.resource }).flat();
-                        let srp = new SensitivityRuleProcessor();
+                        let srp = new CodeMatchingSensitivityRuleProcessor();
                         let srp_rules = srp.applicableRulesFor(codings);
                         // rp.applySecurityLabelsToResource(rules, )
                         if (!e.resource.meta) {
@@ -176,7 +167,7 @@ export class PatientConsentHookProcessor {
                         srp_rules.forEach(r => {
                             // console.log("LABELS: ");
                             // console.log(r);
-                            let ob = { id: SensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
+                            let ob = { id: CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
                             // r.labels.map(l => l.);
                             card.extension?.obligations.push(ob);
                             console.log('PUSHING');
@@ -193,13 +184,13 @@ export class PatientConsentHookProcessor {
         }
     }
 
-    redact(card: Card) {
+    redactFromLabels(card: Card) {
         if (card.extension?.content?.entry) {
             card.extension.content.entry = card.extension?.content?.entry.filter(e => {
                 let shouldRedact = false;
                 if (e.resource?.meta?.security) {
                     card.extension?.obligations.forEach(o => {
-                        if (o.id.code == SensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == SensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
+                        if (o.id.code == CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
                             o.parameters.codes.forEach(code => {
                                 e.resource!.meta!.security!.findIndex((c, i, all) => {
                                     if (code.code == c.code && code.system == c.system) {

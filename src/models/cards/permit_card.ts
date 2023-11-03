@@ -6,4 +6,12 @@ export class PermitCard extends Card {
     summary: 'CONSENT_PERMIT' | 'CONSENT_DENY' | 'NO_CONSENT' = 'CONSENT_PERMIT';
     detail = "There is a consent permitting this action.";
     indicator = "info";
+
+    constructor() {
+        super();
+        if (this.extension) {
+            this.extension.decision = this.summary;
+        }
+    }
+    
 };

@@ -5,17 +5,18 @@ import fs from 'fs';
 import express, { json } from "express";
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
 import { PatientConsentHookRequest } from './patient_consent_hook_request';
-import { PatientConsentHookProcessor } from './patient_consent_hook_processor';
+import { CodeMatchingPatientConsentHookProcessor } from './patient_conest_conselt_hook_processors/code_matching_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
 import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
-import { SensitivityRuleProcessor } from './sensitivity_rules/sensitivity_rule_processor';
+import { CodeMatchingSensitivityRuleProcessor } from './sensitivity_rules/code_matching_sensitivity_rule_processor';
+import { NoConsentCard } from './models/cards/no_consent_card';
 
 dotenv.config();
 
-if(!process.env.FHIR_BASE_URL) {
+if (!process.env.FHIR_BASE_URL) {
     console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
     process.exit(1);
 }
@@ -53,7 +54,7 @@ app.get('/cds-services', (req, res) => {
 
 app.post('/cds-services/patient-consent-consult', (req, res) => {
     // try {
-    console.log(req.body);
+    // console.log(req.body);
 
     // let json = JSON.parse(req.body); // Will throw an error if not valid JSON.
 
@@ -66,23 +67,29 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         let categories = data.context.category || [];
         let content = data.context.content;
 
-        let proc = new PatientConsentHookProcessor();
+        let proc = new CodeMatchingPatientConsentHookProcessor();
         try {
             proc.findConsents(subjects, categories).then(resp => {
                 const entries: BundleEntry<Consent>[] = resp.data.entry!;
-                let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
-                console.log('Request consents:');
-                console.log(JSON.stringify(consents));
-                // if (content) {
-                //     proc.applyConsents(consents, content);
-                //     // TODO @preston Implement!
-                //     res.status(200).send({code_path: 'not_implemented'});
-                // } else {
+                // console.log(resp.data);
+                let card = new NoConsentCard();
+                if (entries) {
+
+                    let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                    console.log('Consents returned from FHIR server:');
+                    console.log(JSON.stringify(consents));
+                    // if (content) {
+                    //     proc.applyConsents(consents, content);
+                    //     // TODO @preston Implement!
+                    //     res.status(200).send({code_path: 'not_implemented'});
+                    // } else {
                     // No data provided, so just make a decision and return a card.
-                    let card = proc.process(consents, data);
-                    res.status(200).send(JSON.stringify(card, null, "\t"));
-                // }
-                // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                    card = proc.process(consents, data);
+                    // }
+                    // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                }
+                res.status(200).send(JSON.stringify(card, null, "\t"));
+
             });
 
         } catch (e) {
@@ -98,7 +105,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(SensitivityRuleProcessor.SENSITIVITY_RULES_FILE));
+    res.status(200).send(fs.readFileSync(CodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {

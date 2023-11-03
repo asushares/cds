@@ -10,5 +10,5 @@ export abstract class Card {
         label: process.env.ORG_NAME!,
         url: process.env.ORG_URL!
     };
-    public extension: ConsentExtension | null = null;
+    public extension: ConsentExtension | null = new ConsentExtension(null);
 }

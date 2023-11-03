@@ -1,10 +1,15 @@
 // Author: Preston Lee
 
 import { Coding } from "fhir/r5";
-import { Rule } from "./rule";
+import { Rule } from "../models/rule";
 
-export class AbstractRuleProcessor {
+export abstract class AbstractSensitivityRuleProcessor {
 
+    static REDACTION_OBLIGATION = {
+        system: "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+        code: "REDACT"
+    }
+    
     applicableRulesFor(codings: Coding[], allRules: Rule[]) {
         // let codeList = codings.map(c => { return c.code; });
         let rules = allRules.filter(rule => {

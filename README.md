@@ -12,7 +12,16 @@ At a high level, FHIR Consent Service:
  - Informs the client (via FHIR ActCodes) on the nature of content sensitivity rules found to be pertinent to the request.
  - Redact the optionally-provided FHIR bundle, when provided, based on all available sensitivity rule and applicable Consent information.
 
-# Running SHARES Consent Service Yourself with Docker/Podman/Kubernetes
+# Roadmap
+
+| Version   | Expected Features                     |
+| ----      | ----                                  |
+| < 1 (Current)       | Initial alpha development of completely new TypeScript-based, stateless implementation of "patient-consent-consult" CDS Hook service as a reusable, containerized microservice. |
+| 1          | FHIR R5 and CDS Hooks v1/v2 compliance implementation with minimum necessary features applicable for [ASU SHARES](https://www.asushares.com) use cases and baseline performance measurements.|
+| 2          | Modular processing framework with new weighted classifier implementation.
+| 3+        | Context-based classification and additional advance implementation modules.
+
+# Running SHARES Consent Service with Docker/Podman/Kubernetes
 
 ## Step 1: Run the CDS Service and FHIR backend
 
@@ -66,6 +75,13 @@ $ npm run test-watch # to automatically rerun tests upon code or test changes
 ```shell
 $ docker build -t asushares/cds:latest . # Local CPU architecture only
 $ docker buildx build --platform linux/arm64/v8,linux/amd64 -t asushares/cds:latest . --push # Multi-architecture
+```
+
+# Examples
+
+TODO Write comprehensive examples of running each major use case.
+```bash
+curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-permit.json" http://localhost:3000/cds-services/patient-consent-consult
 ```
 
 ## License

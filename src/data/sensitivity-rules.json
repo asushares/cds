@@ -9,8 +9,58 @@
         "labels": [
             {
                 "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-                "code": "ETH",
+                "code": "SUD",
                 "display": "substance abuse information sensitivity"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "BH",
+                "display": "Behavioral Health"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "DEMO",
+                "display": "Demographics"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "DIA",
+                "display": "Diagnoses"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "DIS",
+                "display": "Disabilities"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "GDIS",
+                "display": "Genetics"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "DISEASE",
+                "display": "Infectious diseases"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "DRGIS",
+                "display": "Medications"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "SEX",
+                "display": "Sexual and Reproductive Health"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "SOCIAL",
+                "display": "Social Determinates of Health"
+            },
+            {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                "code": "VIO",
+                "display": "Violence"
             }
         ],
         "codeSets": [
@@ -2884,6 +2934,94 @@
                     "RXNORM#1295674",
                     "RXNORM#2588475",
                     "RXNORM#2588476"
+                ]
+            },
+            {
+                "groupID": "SHARESBH",
+                "codes":[
+                    "SNOMED#13746004",
+                    "SNOMED#64905009",
+                    "SNOMED#47505003",
+                    "SNOMED#35489007",
+                    "SNOMED#33449004"
+
+                ]
+            },
+            {
+                "groupID": "SHARESDEMO",
+                "codes":[
+                    "LOINC#LP133912-8",
+                    "LOINC#LA6256-7",
+                    "LOINC#54588-9"
+
+
+                ]
+            },
+            {
+                "groupID": "SHARESDIA",
+                "codes":[
+                    "SNOMED#199229001",
+                    "SNOMED#282825002",
+                    "SNOMED#698247007",
+                    "SNOMED#59621000",
+                    "SNOMED#410429000"
+                ]
+            },
+            {
+                "groupID": "SHARESDIS",
+                "codes":[
+                    "LOINC#LP74101-4",
+                    "LOINC#11331-6",
+                    "LOINC#LA26867-4",
+                    "SNOMED#406506008"
+                ]
+            },
+            {
+                "groupID": "SHARESGDIS",
+                "codes":[
+                    "SNOMED#912201000000104"
+
+                ]
+            },
+            {
+                "groupID": "SHARESDISEASE",
+                "codes":[
+                    "SNOMED#402929007"
+
+                ]
+            },
+            {
+                "groupID": "SHARESDRGIS",
+                "codes":[
+                    "SNOMED#372671002",
+                    "SNOMED#387494007",
+                    "SNOMED#16403005",
+                    "SNOMED#386858008",
+                    "SNOMED#409226009"
+                ]
+            },
+            {
+                "groupID": "SHARESSEX",
+                "codes":[
+                    "LOINC#75410-1",
+                    "LOINC#75666-8"
+                ]
+            },
+            {
+                "groupID": "SHARESSOCIAL",
+                "codes":[
+                    "LOINC#LP212149-1",
+                    "SNOMED#414916001"
+                ]
+            },
+            {
+                "groupID": "SHARESVIO",
+                "codes":[
+                    "LOINC#LA24145-7",
+                    "LOINC#LP75346-4",
+                    "SNOMED#10963831000119103",
+                    "SNOMED#127348004"
+
                 ]
             }
         ]

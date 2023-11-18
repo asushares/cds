@@ -13,7 +13,7 @@ export abstract class AbstractSensitivityRuleProcessor {
     applicableRulesFor(codings: Coding[], allRules: Rule[]) {
         // let codeList = codings.map(c => { return c.code; });
         let rules = allRules.filter(rule => {
-            console.log('Considering rule: ' + rule.id);
+            // console.log('Considering rule: ' + rule.id);
             return rule.allExpendedCodes().some(coding => {
                 // console.log("\tRule coding: " + coding.system + ' ' + coding.code);
                 let found = false;

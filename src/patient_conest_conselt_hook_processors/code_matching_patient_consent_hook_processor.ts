@@ -170,9 +170,8 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                             let ob = { id: CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
                             // r.labels.map(l => l.);
                             card.extension?.obligations.push(ob);
-                            console.log('PUSHING');
+                            console.log('Adding label to resource meta security:');
                             console.log(r.labels);
-                            // card.extension.
                             r.labels.forEach(l => {
                                 e.resource?.meta?.security?.push(l);
                             });

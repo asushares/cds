@@ -11,7 +11,7 @@ const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').to
 
 import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
-import { CodeMatchingSensitivityRuleProcessor } from './sensitivity_rules/code_matching_sensitivity_rule_processor';
+import { SimpleCodeMatchingSensitivityRuleProcessor } from './sensitivity_rules/simple_code_matching_sensitivity_rule_processor';
 import { NoConsentCard } from './models/cards/no_consent_card';
 
 dotenv.config();
@@ -106,7 +106,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(CodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_FILE));
+    res.status(200).send(fs.readFileSync(SimpleCodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {

@@ -10,7 +10,7 @@ import { DenyCard } from '../models/cards/deny_card';
 import { PermitCard } from '../models/cards/permit_card';
 import { AuditService } from '../audit/audit_service';
 import { JSONPath } from 'jsonpath-plus';
-import { CodeMatchingSensitivityRuleProcessor } from '../sensitivity_rules/code_matching_sensitivity_rule_processor';
+import { SimpleCodeMatchingSensitivityRuleProcessor } from '../sensitivity_rules/simple_code_matching_sensitivity_rule_processor';
 import { ConsentExtension } from '../models/consent_extension';
 import { AbstractPatientConsentConsultHookProcessor } from './abstract_patient_consent_consult_hook_processor';
 
@@ -155,7 +155,7 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                 card.extension.content.entry.forEach(e => {
                     if (e.resource) {
                         let codings = JSONPath({ path: "$..coding", json: e.resource }).flat();
-                        let srp = new CodeMatchingSensitivityRuleProcessor();
+                        let srp = new SimpleCodeMatchingSensitivityRuleProcessor();
                         let srp_rules = srp.applicableRulesFor(codings);
                         // rp.applySecurityLabelsToResource(rules, )
                         if (!e.resource.meta) {
@@ -167,7 +167,7 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                         srp_rules.forEach(r => {
                             // console.log("LABELS: ");
                             // console.log(r);
-                            let ob = { id: CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
+                            let ob = { id: SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
                             // r.labels.map(l => l.);
                             card.extension?.obligations.push(ob);
                             console.log('Adding label to resource meta security:');
@@ -189,7 +189,7 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                 let shouldRedact = false;
                 if (e.resource?.meta?.security) {
                     card.extension?.obligations.forEach(o => {
-                        if (o.id.code == CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == CodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
+                        if (o.id.code == SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
                             o.parameters.codes.forEach(code => {
                                 e.resource!.meta!.security!.findIndex((c, i, all) => {
                                     if (code.code == c.code && code.system == c.system) {

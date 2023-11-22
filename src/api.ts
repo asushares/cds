@@ -5,7 +5,7 @@ import fs from 'fs';
 import express, { json } from "express";
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
 import { PatientConsentHookRequest } from './models/patient_consent_hook_request';
-import { CodeMatchingPatientConsentHookProcessor } from './patient_conest_conselt_hook_processors/code_matching_patient_consent_hook_processor';
+import { CodeMatchingPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 

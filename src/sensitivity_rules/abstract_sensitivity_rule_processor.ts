@@ -15,6 +15,7 @@ export abstract class AbstractSensitivityRuleProcessor {
 
     static DEFAULT_CONFIDENENCE_THESHOLD = 1.0;
 
+    static SENSITIVITY_RULES_JSON_SCHEMA_FILE = path.join(path.dirname(__filename), '..', 'schemas', 'sensitivity-rules.schema.json');
     static SENSITIVITY_RULES_JSON_FILE = path.join(path.dirname(__filename), '..', 'data', 'sensitivity-rules.json');
 
     static RULES_FILE: RulesFile = JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE).toString());

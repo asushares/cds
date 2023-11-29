@@ -135,7 +135,7 @@ app.get('/data/sensitivity-rules.json', (req, res) => {
 });
 
 
-app.post('/data/sensitivity-rules.json', basicAuth({users: {administrator: process.env.ADMINISTRATOR_PASSWORD}, challenge: true}), (req, res) => {
+app.post('/data/sensitivity-rules.json', basicAuth({users: {administrator: process.env.ADMINISTRATOR_PASSWORD}}), (req, res) => {
     // console.log(req.body);    
     const results = AbstractSensitivityRuleProcessor.validateRuleFile(req.body);
     if (results) {

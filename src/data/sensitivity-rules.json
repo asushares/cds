@@ -1,5 +1,10 @@
 {
     "$schema": "../schemas/sensitivity-rules.schema.json",
+    "name": "ASU SHARES Rule Set",
+    "updated_at": "",
+    "settings": {
+        "editable": true
+    },
     "rules": [
         {
             "id": "leap-rule-sud",
@@ -23,7 +28,6 @@
                             "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
                             "code": "480",
                             "confidence": 0.5
-
                         },
                         {
                             "system": "http://www.nlm.nih.gov/research/umls/rxnorm",

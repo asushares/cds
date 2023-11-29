@@ -106,7 +106,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(SimpleCodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_FILE));
+    res.status(200).send(fs.readFileSync(SimpleCodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {

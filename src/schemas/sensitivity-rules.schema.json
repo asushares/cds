@@ -25,9 +25,29 @@
     },
     "type": "object",
     "required": [
+        "name",
+        "updated_at",
+        "settings",
         "rules"
     ],
     "properties": {
+        "name": {
+            "type": "string"
+        },
+        "updated_at": {
+            "type": "string"
+        },
+        "settings": {
+            "type": "object",
+            "required": [
+                "editable"
+            ],
+            "properties": {
+                "editable": {
+                    "type": "boolean"
+                }
+            }
+        },
         "rules": {
             "type": "array",
             "items": {

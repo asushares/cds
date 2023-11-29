@@ -13,6 +13,7 @@ import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
 import { SimpleCodeMatchingSensitivityRuleProcessor } from './sensitivity_rules/simple_code_matching_sensitivity_rule_processor';
 import { NoConsentCard } from './models/cards/no_consent_card';
+import { AbstractSensitivityRuleProcessor } from './sensitivity_rules/abstract_sensitivity_rule_processor';
 
 dotenv.config();
 
@@ -115,6 +116,10 @@ app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) 
 
 app.get('/schemas/patient-consent-consult-hook-response.schema.json', (req, res) => {
     res.status(200).send(fs.readFileSync(PatientConsentHookValidator.RESPONSE_SCHEMA_FILE));
+});
+
+app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
+    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
 });
 
 

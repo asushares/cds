@@ -3,6 +3,8 @@
 
 import fs from 'fs';
 import express, { json } from "express";
+import cors from 'cors';
+
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
 import { PatientConsentHookRequest } from './models/patient_consent_hook_request';
 import { CodeMatchingPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_patient_consent_hook_processor';
@@ -25,6 +27,7 @@ const app = express();
 // 
 // Errors are not helpful to the user when doing this.
 app.use(express.json());
+app.use(cors());
 
 // Root URL
 app.get('/', (req, res) => {

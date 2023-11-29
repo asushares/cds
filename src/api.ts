@@ -122,7 +122,7 @@ app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
     res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
 });
 
-app.get('/schemas/sensitivity-rules.json', (req, res) => {
+app.get('/data/sensitivity-rules.json', (req, res) => {
     res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
 });
 

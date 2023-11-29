@@ -3,6 +3,7 @@
 
 import fs from 'fs';
 import express, { json } from "express";
+import basicAuth from 'express-basic-auth';
 import cors from 'cors';
 
 import { PatientConsentHookValidator } from './patient_consent_hook_validator';
@@ -23,10 +24,14 @@ if (!process.env.FHIR_BASE_URL) {
     console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
     process.exit(1);
 }
+if (!process.env.ADMINISTRATOR_PASSWORD) {
+    console.error('ADMINISTRATOR_PASSWORD must be set. Exiting, sorry!');
+    process.exit(1);
+}
 const app = express();
 // 
 // Errors are not helpful to the user when doing this.
-app.use(express.json());
+app.use(express.json({limit: '100mb'}));
 app.use(cors());
 
 // Root URL
@@ -127,6 +132,18 @@ app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
     res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
+});
+
+
+app.post('/data/sensitivity-rules.json', basicAuth({users: {administrator: process.env.ADMINISTRATOR_PASSWORD}, challenge: true}), (req, res) => {
+    // console.log(req.body);    
+    const results = AbstractSensitivityRuleProcessor.validateRuleFile(req.body);
+    if (results) {
+        res.status(400).json({message: "Invalid request.", errors: results});
+    } else {
+        AbstractSensitivityRuleProcessor.updateFileOnDisk(req.body);
+        res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
+    }
 });
 
 

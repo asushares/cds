@@ -2,6 +2,8 @@
 
 import * as fs from 'fs';
 import path from 'path';
+import Ajv from 'ajv';
+
 import { Coding } from "fhir/r5";
 import { Rule } from "../models/rule";
 import { RulesFile } from '../models/rules_file';
@@ -18,8 +20,16 @@ export abstract class AbstractSensitivityRuleProcessor {
     static SENSITIVITY_RULES_JSON_SCHEMA_FILE = path.join(path.dirname(__filename), '..', 'schemas', 'sensitivity-rules.schema.json');
     static SENSITIVITY_RULES_JSON_FILE = path.join(path.dirname(__filename), '..', 'data', 'sensitivity-rules.json');
 
-    static RULES_FILE: RulesFile = JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE).toString());
+    static RULES_FILE: RulesFile = AbstractSensitivityRuleProcessor.initializeRulesFile();
     static SENSITIVITY_RULES: Rule[] = AbstractSensitivityRuleProcessor.initializeRules();
+
+    static AJV = new Ajv();
+    static VALIDATOR = AbstractSensitivityRuleProcessor.AJV.compile(JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_SCHEMA_FILE).toString()));
+
+
+    static initializeRulesFile() {
+        return JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE).toString());
+    }
 
     static initializeRules(): Rule[] {
         const rules: Rule[] = this.RULES_FILE.rules.map((n: any) => { return Object.assign(new Rule, n) });
@@ -30,8 +40,27 @@ export abstract class AbstractSensitivityRuleProcessor {
         return rules;
     }
 
+    static reinitialize() {
+        AbstractSensitivityRuleProcessor.initializeRulesFile();
+        AbstractSensitivityRuleProcessor.initializeRules();
+    }
+
+    static updateFileOnDisk(data: string) {
+        fs.writeFileSync(this.SENSITIVITY_RULES_JSON_FILE, JSON.stringify(data, null, "\t"));
+        AbstractSensitivityRuleProcessor.reinitialize();
+    }
+
     abstract applicableRulesFor(codings: Coding[]): Rule[];
     abstract applicableRulesForAll(codings: Coding[], allRules: Rule[]): Rule[];
+
+    static validateRuleFile(data: string) {
+        const ajv = new Ajv();
+        if (AbstractSensitivityRuleProcessor.VALIDATOR(data)) {
+            return null;
+        } else {
+            return AbstractSensitivityRuleProcessor.VALIDATOR.errors;
+        }
+    }
 
 
 

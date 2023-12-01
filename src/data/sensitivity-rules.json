@@ -1,7 +1,7 @@
 {
 	"$schema": "../schemas/sensitivity-rules.schema.json",
 	"name": "ASU SHARES Rule Set",
-	"updated_at": "",
+	"updated_at": "11/30 by Preston",
 	"settings": {
 		"editable": true
 	},

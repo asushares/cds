@@ -142,6 +142,7 @@ app.post('/data/sensitivity-rules.json', basicAuth({users: {administrator: proce
         res.status(400).json({message: "Invalid request.", errors: results});
     } else {
         AbstractSensitivityRuleProcessor.updateFileOnDisk(req.body);
+        console.log('Rules file has been updated.');
         res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
     }
 });

@@ -8,7 +8,7 @@ import { Coding } from "fhir/r5";
 import { Rule } from "../models/rule";
 import { RulesFile } from '../models/rules_file';
 
-export abstract class AbstractSensitivityRuleProcessor {
+export abstract class AbstractSensitivityRuleProvider {
 
     static REDACTION_OBLIGATION = {
         system: "http://terminology.hl7.org/CodeSystem/v3-ActCode",
@@ -20,15 +20,15 @@ export abstract class AbstractSensitivityRuleProcessor {
     static SENSITIVITY_RULES_JSON_SCHEMA_FILE = path.join(path.dirname(__filename), '..', 'schemas', 'sensitivity-rules.schema.json');
     static SENSITIVITY_RULES_JSON_FILE = path.join(path.dirname(__filename), '..', 'data', 'sensitivity-rules.json');
 
-    static RULES_FILE: RulesFile = AbstractSensitivityRuleProcessor.initializeRulesFile();
-    static SENSITIVITY_RULES: Rule[] = AbstractSensitivityRuleProcessor.initializeRules();
+    static RULES_FILE: RulesFile = AbstractSensitivityRuleProvider.initializeRulesFile();
+    static SENSITIVITY_RULES: Rule[] = AbstractSensitivityRuleProvider.initializeRules();
 
     static AJV = new Ajv();
-    static VALIDATOR = AbstractSensitivityRuleProcessor.AJV.compile(JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_SCHEMA_FILE).toString()));
+    static VALIDATOR = AbstractSensitivityRuleProvider.AJV.compile(JSON.parse(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE).toString()));
 
 
     static initializeRulesFile() {
-        return JSON.parse(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE).toString());
+        return JSON.parse(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE).toString());
     }
 
     static initializeRules(): Rule[] {
@@ -41,24 +41,24 @@ export abstract class AbstractSensitivityRuleProcessor {
     }
 
     static reinitialize() {
-        AbstractSensitivityRuleProcessor.initializeRulesFile();
-        AbstractSensitivityRuleProcessor.initializeRules();
+        AbstractSensitivityRuleProvider.initializeRulesFile();
+        AbstractSensitivityRuleProvider.initializeRules();
     }
 
     static updateFileOnDisk(data: string) {
         fs.writeFileSync(this.SENSITIVITY_RULES_JSON_FILE, JSON.stringify(data, null, "\t"));
-        AbstractSensitivityRuleProcessor.reinitialize();
+        AbstractSensitivityRuleProvider.reinitialize();
     }
 
-    abstract applicableRulesFor(codings: Coding[]): Rule[];
-    abstract applicableRulesForAll(codings: Coding[], allRules: Rule[]): Rule[];
+    abstract applicableRulesForAll(codings: Coding[]): Rule[];
+    abstract applicableRulesFor(codings: Coding[], allRules: Rule[]): Rule[];
 
     static validateRuleFile(data: string) {
         const ajv = new Ajv();
-        if (AbstractSensitivityRuleProcessor.VALIDATOR(data)) {
+        if (AbstractSensitivityRuleProvider.VALIDATOR(data)) {
             return null;
         } else {
-            return AbstractSensitivityRuleProcessor.VALIDATOR.errors;
+            return AbstractSensitivityRuleProvider.VALIDATOR.errors;
         }
     }
 

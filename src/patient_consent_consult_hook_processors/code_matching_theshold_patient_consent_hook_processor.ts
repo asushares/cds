@@ -10,13 +10,19 @@ import { DenyCard } from '../models/cards/deny_card';
 import { PermitCard } from '../models/cards/permit_card';
 import { AuditService } from '../audit/audit_service';
 import { JSONPath } from 'jsonpath-plus';
-import { SimpleCodeMatchingSensitivityRuleProcessor } from '../sensitivity_rules/simple_code_matching_sensitivity_rule_processor';
+import { CodeMatchingThresholdSensitivityRuleProvider } from '../sensitivity_rules/code_matching_theshold_sensitivity_rule_provider';
 import { ConsentExtension } from '../models/consent_extension';
 import { AbstractPatientConsentConsultHookProcessor } from './abstract_patient_consent_consult_hook_processor';
 
-export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientConsentConsultHookProcessor {
+export class CodeMatchingThesholdPatientConsentHookProcessor extends AbstractPatientConsentConsultHookProcessor {
 
-   
+    static DEFAULT_THRESHOLD = 0.0;
+    // public threshold: number = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
+    
+    constructor(public threshold: number) {
+        super();
+    }
+
     process(consents: Consent[], request: PatientConsentHookRequest,): Card {
 
         // Find and determine the correct card type.
@@ -155,8 +161,8 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                 card.extension.content.entry.forEach(e => {
                     if (e.resource) {
                         let codings = JSONPath({ path: "$..coding", json: e.resource }).flat();
-                        let srp = new SimpleCodeMatchingSensitivityRuleProcessor();
-                        let srp_rules = srp.applicableRulesFor(codings);
+                        let srp = new CodeMatchingThresholdSensitivityRuleProvider(this.threshold);
+                        let srp_rules = srp.applicableRulesForAll(codings);
                         // rp.applySecurityLabelsToResource(rules, )
                         if (!e.resource.meta) {
                             e.resource.meta = {};
@@ -167,7 +173,7 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                         srp_rules.forEach(r => {
                             // console.log("LABELS: ");
                             // console.log(r);
-                            let ob = { id: SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
+                            let ob = { id: CodeMatchingThresholdSensitivityRuleProvider.REDACTION_OBLIGATION, parameters: { codes: r.labels } }
                             // r.labels.map(l => l.);
                             card.extension?.obligations.push(ob);
                             console.log('Adding label to resource meta security:');
@@ -189,7 +195,7 @@ export class CodeMatchingPatientConsentHookProcessor extends AbstractPatientCons
                 let shouldRedact = false;
                 if (e.resource?.meta?.security) {
                     card.extension?.obligations.forEach(o => {
-                        if (o.id.code == SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.code && o.id.system == SimpleCodeMatchingSensitivityRuleProcessor.REDACTION_OBLIGATION.system) {
+                        if (o.id.code == CodeMatchingThresholdSensitivityRuleProvider.REDACTION_OBLIGATION.code && o.id.system == CodeMatchingThresholdSensitivityRuleProvider.REDACTION_OBLIGATION.system) {
                             o.parameters.codes.forEach(code => {
                                 e.resource!.meta!.security!.findIndex((c, i, all) => {
                                     if (code.code == c.code && code.system == c.system) {

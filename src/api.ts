@@ -6,17 +6,17 @@ import express, { json } from "express";
 import basicAuth from 'express-basic-auth';
 import cors from 'cors';
 
-import { PatientConsentHookValidator } from './patient_consent_hook_validator';
+import { PatientConsentHookRequestValidator } from './patient_consent_hook_request_validator';
 import { PatientConsentHookRequest } from './models/patient_consent_hook_request';
-import { CodeMatchingPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_patient_consent_hook_processor';
+import { CodeMatchingThesholdPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_theshold_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
 import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
-import { SimpleCodeMatchingSensitivityRuleProcessor } from './sensitivity_rules/simple_code_matching_sensitivity_rule_processor';
+import { CodeMatchingThresholdSensitivityRuleProvider } from './sensitivity_rules/code_matching_theshold_sensitivity_rule_provider';
 import { NoConsentCard } from './models/cards/no_consent_card';
-import { AbstractSensitivityRuleProcessor } from './sensitivity_rules/abstract_sensitivity_rule_processor';
+import { AbstractSensitivityRuleProvider } from './sensitivity_rules/abstract_sensitivity_rule_provider';
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ if (!process.env.ADMINISTRATOR_PASSWORD) {
 const app = express();
 // 
 // Errors are not helpful to the user when doing this.
-app.use(express.json({limit: '100mb'}));
+app.use(express.json({ limit: '100mb' }));
 app.use(cors());
 
 // Root URL
@@ -62,13 +62,15 @@ app.get('/cds-services', (req, res) => {
 
 });
 
+const custom_theshold_header = 'CDS-Confidence-Threshold'.toLowerCase();
+
 app.post('/cds-services/patient-consent-consult', (req, res) => {
+    // req.headers
     // try {
-    // console.log(req.body);
 
     // let json = JSON.parse(req.body); // Will throw an error if not valid JSON.
 
-    const results = PatientConsentHookValidator.validateRequest(req.body);
+    const results = PatientConsentHookRequestValidator.validateRequest(req.body);
     if (results) {
         res.status(400).json(results);
     } else {
@@ -77,7 +79,15 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         let categories = data.context.category || [];
         let content = data.context.content;
 
-        let proc = new CodeMatchingPatientConsentHookProcessor();
+        let threshold: number = Number(req.headers[custom_theshold_header]);
+        if (threshold) {
+            console.log("Using requested confidence threshold: " + threshold);
+        } else {
+            threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
+            console.log('Using default confidence threshold: ' + threshold);            
+        }
+        let proc = new CodeMatchingThesholdPatientConsentHookProcessor(threshold);
+
         try {
             proc.findConsents(subjects, categories).then(resp => {
                 const entries: BundleEntry<Consent>[] = resp.data.entry!;
@@ -115,33 +125,33 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(SimpleCodeMatchingSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
+    res.status(200).send(fs.readFileSync(CodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(PatientConsentHookValidator.REQUEST_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(PatientConsentHookRequestValidator.REQUEST_SCHEMA_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-response.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(PatientConsentHookValidator.RESPONSE_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(PatientConsentHookRequestValidator.RESPONSE_SCHEMA_FILE));
 });
 
 app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProcessor.SENSITIVITY_RULES_JSON_FILE));
+    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE));
 });
 
 
-app.post('/data/sensitivity-rules.json', basicAuth({users: {administrator: process.env.ADMINISTRATOR_PASSWORD}}), (req, res) => {
+app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.ADMINISTRATOR_PASSWORD } }), (req, res) => {
     // console.log(req.body);    
-    const results = AbstractSensitivityRuleProcessor.validateRuleFile(req.body);
+    const results = AbstractSensitivityRuleProvider.validateRuleFile(req.body);
     if (results) {
-        res.status(400).json({message: "Invalid request.", errors: results});
+        res.status(400).json({ message: "Invalid request.", errors: results });
     } else {
-        AbstractSensitivityRuleProcessor.updateFileOnDisk(req.body);
+        AbstractSensitivityRuleProvider.updateFileOnDisk(req.body);
         console.log('Rules file has been updated.');
         res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
     }

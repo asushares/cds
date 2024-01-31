@@ -20,7 +20,9 @@ import { AbstractSensitivityRuleProvider } from './sensitivity_rules/abstract_se
 
 dotenv.config();
 
-if (!process.env.FHIR_BASE_URL) {
+if (process.env.FHIR_BASE_URL) {
+    console.log('Using FHIR_BASE_URL ' + process.env.FHIR_BASE_URL);
+} else {
     console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
     process.exit(1);
 }
@@ -63,6 +65,7 @@ app.get('/cds-services', (req, res) => {
 });
 
 const custom_theshold_header = 'CDS-Confidence-Threshold'.toLowerCase();
+const redaction_enabled_header = 'CDS-Redaction-Enabled'.toLowerCase();
 
 app.post('/cds-services/patient-consent-consult', (req, res) => {
     // req.headers
@@ -84,9 +87,18 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
             console.log("Using requested confidence threshold: " + threshold);
         } else {
             threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
-            console.log('Using default confidence threshold: ' + threshold);            
+            console.log('Using default confidence threshold: ' + threshold);
         }
-        let proc = new CodeMatchingThesholdPatientConsentHookProcessor(threshold);
+        
+        let redaction_enabled: boolean = (req.headers[redaction_enabled_header] == 'true' || req.headers[redaction_enabled_header] == null);
+        if (redaction_enabled) {
+            console.log("Resource redaction: enabled");
+        } else {
+            threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
+            console.log('Resource redaction: disabled');
+        }
+
+        let proc = new CodeMatchingThesholdPatientConsentHookProcessor(threshold, redaction_enabled);
 
         try {
             proc.findConsents(subjects, categories).then(resp => {

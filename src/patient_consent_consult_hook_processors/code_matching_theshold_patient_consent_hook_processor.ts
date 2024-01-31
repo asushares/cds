@@ -18,8 +18,8 @@ export class CodeMatchingThesholdPatientConsentHookProcessor extends AbstractPat
 
     static DEFAULT_THRESHOLD = 0.0;
     // public threshold: number = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
-    
-    constructor(public threshold: number) {
+
+    constructor(public threshold: number, public redaction_enabled: boolean) {
         super();
     }
 
@@ -56,7 +56,14 @@ export class CodeMatchingThesholdPatientConsentHookProcessor extends AbstractPat
         this.addSecurityLabels(consents, request, card);
 
         // Redact resources
-        this.redactFromLabels(card);
+        if (this.redaction_enabled) {
+            this.redactFromLabels(card);
+        }
+
+        // Update the number of bundle resource, as it may have changed due to redaction.
+        if (card.extension?.content?.entry) {
+            card.extension.content.total = card.extension?.content?.entry?.length;
+        }
 
         // Create an AuditEvent with the results.
         AuditService.create(consents, request, card).then(res => {

@@ -40,6 +40,10 @@ Then run the latest SHARES Consent Service build:
 $ docker run -it --rm -p 3000:3000 asushares/cds:latest
 ```
 
+To load sample FHIR bundles into your FHIR R5 backend
+```shell
+find src/samples -name '*.json' -exec curl -X POST -H 'Content-Type: application/fhir+json' http://localhost:8080/fhir -d @{} \;
+```
 ### Option 2: Use our example HAPI server
 
 If you do not have a server, you may use the  must have a backend FHIR server, such as HAPI FHIR, available as well.  
@@ -50,9 +54,9 @@ TODO document!
 
 ## Step 3: Build Your Consent Documents
 
-Consent documents in FHIR R5 are fairly different than in R4 and prior releases. They are generally more flexible in general -- e.g. they do not only apply to patients -- and the logical representation requires different considerations than prior implementations.
+Consent documents in FHIR R5 are very different than in R4 and prior releases. They are generally more flexible -- e.g. they do not only apply to patients -- and the logical representation requires different considerations than prior implementations.
 
-We have also developed a UI for browsing and managing R5 Consent documents called [Consent Manager](https://github.com/asushares/consent-manager) that aims to fully support modeling of R5 Consent documents. See the project page for usage.
+We have also developed a UI for provider browsing and management of R5 Consent documents called [Consent Manager](https://github.com/asushares/consent-manager) that aims to fully support modeling of R5 Consent documents. See the project page for usage.
 
 ## Running From Source
 
@@ -91,9 +95,17 @@ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -
 curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-no-consent-found.json" http://localhost:3000/cds-services/patient-consent-consult
 
 curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d "@`pwd`/test/example-request-deny.json" http://localhost:3000/cds-services/patient-consent-consult
-
-
 ```
+
+# Overriding Execution Behavior with HTTP Headers
+
+## CDS-Confidence-Threshold: <number> (default: 0.0)
+
+The CDS-Confidence-Threshold header can be used to specific a new minimum threshold value used to determin what constitutes an applicable sensitivity rule. Rules may use any arbitrary confidence values, though the default rules use 0.0 <= x <= 1.0. So if you want to change this value from the default, try a value greater than 0.0 but less than 1.0. Overly high values will prevent _any_ rule from matching.
+
+## CDS-Redaction-Enabled: true | <any> (default: true)
+
+By default, the engine will automatically redact any resources labeled as sensitive. You may disable this behavior if, for example, you would to see what the engine considered sensitive for a given set of inputs, but do _not_ want it to actually redact those resources.
 
 ## License
 

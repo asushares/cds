@@ -1,6 +1,6 @@
 {
     "name": "@asushares/cds",
-    "version": "0.7.0",
+    "version": "0.7.1",
     "description": "ASU SHARES FHIR Consent CDS Hooks services.",
     "scripts": {
         "start": "npm run build && npx node build/server.js",
@@ -43,7 +43,7 @@
         "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
         "@types/fhir": "^0.0.41",
-        "@types/jest": "^29.5.11",
+        "@types/jest": "^29.5.12",
         "@types/uuid": "^9.0.8"
     }
 }

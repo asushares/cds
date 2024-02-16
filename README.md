@@ -103,7 +103,7 @@ curl -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -
 
 The CDS-Confidence-Threshold header can be used to specific a new minimum threshold value used to determin what constitutes an applicable sensitivity rule. Rules may use any arbitrary confidence values, though the default rules use 0.0 <= x <= 1.0. So if you want to change this value from the default, try a value greater than 0.0 but less than 1.0. Overly high values will prevent _any_ rule from matching.
 
-## CDS-Redaction-Enabled: true | <any> (default: true)
+## "CDS-Redaction-Enabled": true | <any> (default: true)
 
 By default, the engine will automatically redact any resources labeled as sensitive. You may disable this behavior if, for example, you would to see what the engine considered sensitive for a given set of inputs, but do _not_ want it to actually redact those resources.
 

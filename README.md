@@ -1,8 +1,8 @@
-# ASU SHARES FHIR Consent CDS Hooks Services
+# ASU SHARES FHIR Consent Labeling & Redaction CDS Hooks Services
 
-The ASU SHARES FHIR Consent Service from [ASU SHARES](https://www.asushares.com) is a reference implementation providing FHIR-based healthcare data sharing determination decisions and content data redaction functions based on FHIR R5 and CDS Hooks v1 and v2. Long term, we intend to settle on FHIR R6 once the specification stabilizes.
+The ASU SHARES FHIR Consent Labeling & Redaction Service from [ASU SHARES](https://www.asushares.com) is a reference implementation providing FHIR-based healthcare data sharing determination decisions and content data redaction functions based on FHIR R5 and CDS Hooks v1 and v2. Long term, we intend to settle on FHIR R6 once the specification stabilizes.
 
-FHIR Consent Service is part of a U.S. National Institute of Health (NIH) project funded through August, 2028. Technical execution of the Arizona State University (ASU) "Substance use HeAlth REcord Sharing" (SHARES) grant is led by co-investigator Dr. Preston Lee at Arizona State University under principal investigator Dr. Adela Grando. See the [ASU SHARES Team](https://www.asushares.com/team) for a full list of stakeholders.
+SHARES FHIR Consent Labeling & Redaction Service is part of a U.S. National Institute of Health (NIH) project funded through August, 2028. Technical execution of the Arizona State University (ASU) "Substance use HeAlth REcord Sharing" (SHARES) grant is led by co-investigator Dr. Preston Lee at Arizona State University under principal investigator Dr. Adela Grando. See the [ASU SHARES Team](https://www.asushares.com/team) for a full list of stakeholders.
 
 At a high level, FHIR Consent Service:
 
@@ -21,7 +21,7 @@ At a high level, FHIR Consent Service:
 | 2          | Modular processing framework with new weighted classifier implementation.
 | 3+        | Context-based classification and additional advance implementation modules.
 
-# Running SHARES Consent Service with Docker/Podman/Kubernetes
+# Running the Service with Docker/Podman/Kubernetes
 
 ## Step 1: Run the CDS Service and FHIR backend
 

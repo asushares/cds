@@ -7,15 +7,15 @@ import basicAuth from 'express-basic-auth';
 import cors from 'cors';
 
 import { PatientConsentHookRequestValidator } from './patient_consent_hook_request_validator';
-import { PatientConsentHookRequest } from './models/patient_consent_hook_request';
 import { CodeMatchingThesholdPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_theshold_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
+import { NoConsentCard, PatientConsentHookRequest } from '@asushares/core';
+
 import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
 import { CodeMatchingThresholdSensitivityRuleProvider } from './sensitivity_rules/code_matching_theshold_sensitivity_rule_provider';
-import { NoConsentCard } from './models/cards/no_consent_card';
 import { AbstractSensitivityRuleProvider } from './sensitivity_rules/abstract_sensitivity_rule_provider';
 
 dotenv.config();
@@ -89,7 +89,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
             threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
             console.log('Using default confidence threshold: ' + threshold);
         }
-        
+
         let redaction_enabled: boolean = (req.headers[redaction_enabled_header] == 'true' || req.headers[redaction_enabled_header] == null);
         if (redaction_enabled) {
             console.log("Resource redaction: enabled");

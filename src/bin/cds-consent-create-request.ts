@@ -1,4 +1,4 @@
-import { PatientConsentHookRequest } from "../models/patient_consent_hook_request";
+import { PatientConsentHookRequest } from "@asushares/core";
 
 let r = new PatientConsentHookRequest();
 console.log(JSON.stringify(r, null, "\t"));

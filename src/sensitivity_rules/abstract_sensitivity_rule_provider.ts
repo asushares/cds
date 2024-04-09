@@ -5,8 +5,7 @@ import path from 'path';
 import Ajv from 'ajv';
 
 import { Coding } from "fhir/r5";
-import { Rule } from "../models/rule";
-import { RulesFile } from '../models/rules_file';
+import { Rule, RulesFile } from "@asushares/core";
 
 export abstract class AbstractSensitivityRuleProvider {
 

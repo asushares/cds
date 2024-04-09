@@ -2,16 +2,12 @@
 
 
 import axios from 'axios';
-import { PatientConsentHookRequest, SystemCode, SystemValue } from '../models/patient_consent_hook_request';
+import { PatientConsentHookRequest, SystemCode, SystemValue } from '@asushares/core';
 import { Bundle, Consent, ConsentProvision } from 'fhir/r5';
-import { Card } from '../models/cards/card';
-import { NoConsentCard } from '../models/cards/no_consent_card';
-import { DenyCard } from '../models/cards/deny_card';
-import { PermitCard } from '../models/cards/permit_card';
+import { Card, ConsentExtension, DenyCard, NoConsentCard, PermitCard } from '@asushares/core';
 import { AuditService } from '../audit/audit_service';
 import { JSONPath } from 'jsonpath-plus';
 import { CodeMatchingThresholdSensitivityRuleProvider } from '../sensitivity_rules/code_matching_theshold_sensitivity_rule_provider';
-import { ConsentExtension } from '../models/consent_extension';
 import { AbstractPatientConsentConsultHookProcessor } from './abstract_patient_consent_consult_hook_processor';
 
 export class CodeMatchingThesholdPatientConsentHookProcessor extends AbstractPatientConsentConsultHookProcessor {

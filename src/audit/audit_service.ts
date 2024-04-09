@@ -3,8 +3,7 @@
 import { AuditEvent, Consent } from "fhir/r5";
 
 import axios from 'axios';
-import { PatientConsentHookRequest } from "../models/patient_consent_hook_request";
-import { Card } from "../models/cards/card";
+import { Card, PatientConsentHookRequest } from '@asushares/core';
 
 export class AuditService {
 
@@ -19,7 +18,7 @@ export class AuditService {
             code: { text: 'ASU SHARES' },
             source: { observer: { display: 'ASU SHARES' } }
         }
-        if(request.context.content) {
+        if (request.context.content) {
             ae.contained = [request.context.content];
         }
         // console.log(ae);        

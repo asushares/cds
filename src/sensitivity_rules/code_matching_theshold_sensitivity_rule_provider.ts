@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import { Rule } from '../models/rule';
+import { Rule } from '@asushares/core';
 import { Coding } from 'fhir/r5';
 import { AbstractSensitivityRuleProvider } from './abstract_sensitivity_rule_provider';
 

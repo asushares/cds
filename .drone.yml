@@ -1,20 +1,21 @@
 ---
-name: pmo-dashboard
+name: latest-amd64
 kind: pipeline
 type: docker
+platform:
+  arch: amd64
+  os: linux
 steps:
   - name: publish
     image: plugins/docker
     settings:
       repo:
         from_secret: docker_repository
-      tags: [latest]
+      tags: [latest, latest-amd64]
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    when:
-      branch: [main]
 trigger:
   branch:
     - master

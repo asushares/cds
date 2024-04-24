@@ -15,4 +15,6 @@ steps:
         from_secret: docker_password
     when:
       branch: [main]
-  
+trigger:
+  branch:
+    - master

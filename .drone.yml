@@ -18,4 +18,4 @@ steps:
         from_secret: docker_password
 trigger:
   branch:
-    - master
+    - main

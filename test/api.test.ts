@@ -7,7 +7,7 @@ const request = require('supertest');
 // import supertest from "@types/supertest";
 
 import app from '../src/api';
-import { PatientConsentHookRequest } from '../src/models/patient_consent_hook_request';
+import { PatientConsentHookRequest } from '@asushares/core';
 
 describe('GET /', () => {
 

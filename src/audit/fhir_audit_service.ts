@@ -1,25 +1,25 @@
 // Author: Preston Lee
 
-import { AuditEvent, Consent } from "fhir/r5";
+import { AuditEvent, Coding, Consent } from "fhir/r5";
 
 import axios from 'axios';
-import { Card, PatientConsentHookRequest } from '@asushares/core';
+import { DataSharingEngineContext } from '@asushares/core';
 
-export class AuditService {
+export class FHIRAuditService {
 
-    static create(consents: Consent[], request: PatientConsentHookRequest, card: Card) {
+    static create(consents: Consent[], engineContext: DataSharingEngineContext, outcodeCode: Coding) {
         let ae: AuditEvent = {
             resourceType: 'AuditEvent',
             recorded: new Date().toISOString(),
-            outcome: { code: { code: card.summary } },
+            outcome: { code: outcodeCode },
             agent: [{ who: { display: 'ASU SHARES' } }],
             // basedOn: [ { reference: 'Consent/30405' }, { reference: 'Consent/30452' } ],
             // basedOn: consents.map(c => {return { reference: 'Consent/' + c.id, type: 'Consent' }}) as any as Reference[],
             code: { text: 'ASU SHARES' },
             source: { observer: { display: 'ASU SHARES' } }
         }
-        if (request.context.content) {
-            ae.contained = [request.context.content];
+        if (engineContext.content) {
+            ae.contained = [engineContext.content];
         }
         // console.log(ae);        
         return axios.post(process.env.FHIR_BASE_URL + '/AuditEvent', ae);

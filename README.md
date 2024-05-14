@@ -30,8 +30,7 @@ If you have your own FHIR R5 server, either set the following environment variab
 
 ```bash
 FHIR_BASE_URL=https://your_fhir_server_url
-ORG_NAME=ASUSHARES
-ORG_URL=https://www.your_company_website.com
+ADMINISTRATOR_PASSWORD=password_for_post_endpoints
 ```
 
 Then run the latest SHARES Consent Service build:

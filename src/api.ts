@@ -2,23 +2,23 @@
 
 
 import fs from 'fs';
-import express, { json } from "express";
+import express from "express";
 import basicAuth from 'express-basic-auth';
 import cors from 'cors';
+import dotenv from 'dotenv';
+dotenv.config();
 
-import { PatientConsentHookRequestValidator } from './patient_consent_hook_request_validator';
-import { CodeMatchingThesholdPatientConsentHookProcessor } from './patient_consent_consult_hook_processors/code_matching_theshold_patient_consent_hook_processor';
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
-import { NoConsentCard, PatientConsentHookRequest } from '@asushares/core';
+import { AbstractSensitivityRuleProvider, DataSharingCDSHookRequest } from '@asushares/core';
 
-import dotenv from 'dotenv';
 import { BundleEntry, Consent } from 'fhir/r5';
-import { CodeMatchingThresholdSensitivityRuleProvider } from './sensitivity_rules/code_matching_theshold_sensitivity_rule_provider';
-import { AbstractSensitivityRuleProvider } from './sensitivity_rules/abstract_sensitivity_rule_provider';
 
-dotenv.config();
+import { FileSystemCodeMatchingThesholdCDSHookEngine } from './patient_consent_consult_hook_processors/file_system_code_matching_theshold_cds_hook_engine';
+import { FileSystemDataSharingCDSHookValidator } from './file_system_data_sharing_cds_hook_validator';
+import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_system_code_matching_theshold_sensitivity_rule_provider';
+
 
 if (process.env.FHIR_BASE_URL) {
     console.log('Using FHIR_BASE_URL ' + process.env.FHIR_BASE_URL);
@@ -35,6 +35,11 @@ const app = express();
 // Errors are not helpful to the user when doing this.
 app.use(express.json({ limit: '100mb' }));
 app.use(cors());
+
+let rules_file_path = FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE;
+let cds_hooks_validator = new FileSystemDataSharingCDSHookValidator();
+
+let rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
 
 // Root URL
 app.get('/', (req, res) => {
@@ -72,12 +77,11 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
     // try {
 
     // let json = JSON.parse(req.body); // Will throw an error if not valid JSON.
-
-    const results = PatientConsentHookRequestValidator.validateRequest(req.body);
+    const results = cds_hooks_validator.validateRequest(req.body);
     if (results) {
         res.status(400).json(results);
     } else {
-        let data: PatientConsentHookRequest = req.body;
+        let data: DataSharingCDSHookRequest = req.body;
         let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
         let categories = data.context.category || [];
         let content = data.context.content;
@@ -86,7 +90,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         if (threshold) {
             console.log("Using requested confidence threshold: " + threshold);
         } else {
-            threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
+            threshold = FileSystemCodeMatchingThesholdCDSHookEngine.DEFAULT_THRESHOLD;
             console.log('Using default confidence threshold: ' + threshold);
         }
 
@@ -94,39 +98,36 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         if (redaction_enabled) {
             console.log("Resource redaction: enabled");
         } else {
-            threshold = CodeMatchingThesholdPatientConsentHookProcessor.DEFAULT_THRESHOLD;
+            threshold = FileSystemCodeMatchingThesholdCDSHookEngine.DEFAULT_THRESHOLD;
             console.log('Resource redaction: disabled');
         }
 
-        let proc = new CodeMatchingThesholdPatientConsentHookProcessor(threshold, redaction_enabled);
+        let proc = new FileSystemCodeMatchingThesholdCDSHookEngine(rule_provider, threshold, redaction_enabled);
+        proc.findConsents(subjects, categories).then(resp => {
+            resp.subscribe({
+                next: n => {
 
-        try {
-            proc.findConsents(subjects, categories).then(resp => {
-                const entries: BundleEntry<Consent>[] = resp.data.entry!;
-                // console.log(resp.data);
-                let card = new NoConsentCard();
-                if (entries) {
+                    const entries: BundleEntry<Consent>[] | undefined = n.entry;
+                    if (entries) {
 
-                    let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
-                    console.log('Consents returned from FHIR server:');
-                    console.log(JSON.stringify(consents));
-                    // if (content) {
-                    //     proc.applyConsents(consents, content);
-                    //     // TODO @preston Implement!
-                    //     res.status(200).send({code_path: 'not_implemented'});
-                    // } else {
-                    // No data provided, so just make a decision and return a card.
-                    card = proc.process(consents, data);
-                    // }
-                    // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                        let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                        console.log('Consents returned from FHIR server:');
+                        console.log(JSON.stringify(consents));
+                        let card = proc.process(consents, data.context);
+                        // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                        res.status(200).send(JSON.stringify(card, null, "\t"));
+                    } else {
+                        res.status(502).send({ message: 'Invalid data or error processing request. See logs.' });
+                    }
+                }, error: e => {
+                    let msg = 'Error loading Consent documents.';
+                    console.error(msg);
+                    res.status(502).send({ message: msg, details: e });
                 }
-                res.status(200).send(JSON.stringify(card, null, "\t"));
-
             });
+            // console.log(resp.data);
+        });
 
-        } catch (e) {
-            res.status(502).send({ message: e });
-        }
         // console.log(data.context);
         // res.status(200).send({ all: 'good' });
     }
@@ -136,34 +137,30 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
     // }
 });
 
-app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(CodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE));
-});
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(PatientConsentHookRequestValidator.REQUEST_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(FileSystemDataSharingCDSHookValidator.REQUEST_SCHEMA_FILE));
 });
 
 app.get('/schemas/patient-consent-consult-hook-response.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(PatientConsentHookRequestValidator.RESPONSE_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(FileSystemDataSharingCDSHookValidator.RESPONSE_SCHEMA_FILE));
 });
 
 app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
+    res.status(200).send(fs.readFileSync(FileSystemCodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE));
+    res.status(200).send(fs.readFileSync(rule_provider.loadRulesFile()));
 });
-
 
 app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.ADMINISTRATOR_PASSWORD } }), (req, res) => {
     // console.log(req.body);    
-    const results = AbstractSensitivityRuleProvider.validateRuleFile(req.body);
+     const results = rule_provider.validateRuleFile(req.body);
     if (results) {
         res.status(400).json({ message: "Invalid request.", errors: results });
     } else {
-        AbstractSensitivityRuleProvider.updateFileOnDisk(req.body);
+        rule_provider.updateRulesFile(req.body);
         console.log('Rules file has been updated.');
         res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
     }

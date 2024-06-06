@@ -151,7 +151,7 @@ app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(rule_provider.loadRulesFile()));
+    res.status(200).send(rule_provider.loadRulesFile());
 });
 
 app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.ADMINISTRATOR_PASSWORD } }), (req, res) => {

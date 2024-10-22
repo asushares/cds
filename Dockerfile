@@ -1,4 +1,4 @@
-FROM node:21-alpine
+FROM node:22-alpine
 LABEL maintainer="Preston Lee"
 
 RUN mkdir /app

@@ -18,6 +18,7 @@ import { BundleEntry, Consent } from 'fhir/r5';
 import { FileSystemCodeMatchingThesholdCDSHookEngine } from './patient_consent_consult_hook_processors/file_system_code_matching_theshold_cds_hook_engine';
 import { FileSystemDataSharingCDSHookValidator } from './file_system_data_sharing_cds_hook_validator';
 import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_system_code_matching_theshold_sensitivity_rule_provider';
+import Ajv from 'ajv';
 
 
 if (process.env.FHIR_BASE_URL) {
@@ -78,8 +79,12 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 
     // let json = JSON.parse(req.body); // Will throw an error if not valid JSON.
     const results = cds_hooks_validator.validateRequest(req.body);
-    if (results) {
-        res.status(400).json(results);
+    // cds_hooks_validator.requestValidator(req.body);
+    // const results =  Ajv. cds_hooks_validator.requestValidator.errors;
+    // console.log("Results:" + results);
+    
+    if (results) {        
+        res.status(400).json({html: results});
     } else {
         let data: DataSharingCDSHookRequest = req.body;
         let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
@@ -106,10 +111,8 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         proc.findConsents(subjects, categories).then(resp => {
             resp.subscribe({
                 next: n => {
-
                     const entries: BundleEntry<Consent>[] | undefined = n.entry;
                     if (entries) {
-
                         let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
                         console.log('Consents returned from FHIR server:');
                         console.log(JSON.stringify(consents));
@@ -117,7 +120,7 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
                         // console.log(JSON.stringify(entries.map(n => { n.resource! })));
                         res.status(200).send(JSON.stringify(card, null, "\t"));
                     } else {
-                        res.status(502).send({ message: 'Invalid data or error processing request. See logs.' });
+                        res.status(502).send({ message: 'No Consent documents or other error processing request. See logs.' });
                     }
                 }, error: e => {
                     let msg = 'Error loading Consent documents.';

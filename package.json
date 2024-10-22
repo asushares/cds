@@ -1,6 +1,6 @@
 {
     "name": "@asushares/cds",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "ASU SHARES FHIR Consent CDS Hooks services.",
     "scripts": {
         "start": "npm run build && npx node build/server.js",

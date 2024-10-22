@@ -1,18 +1,18 @@
 {
-	"$schema": "../src/schemas/patient-consent-consult-hook-request.schema.json",
+	"$schema": "https://cds-hooks.sandbox.asushares.com/schemas/patient-consent-consult-hook-request.schema.json",
 	"hook": "patient-consent-consult",
 	"hookInstance": "patient-consent-consult",
 	"context": {
 		"actor": [
 			{
-				"value": "Organization/195247"
+				"value": "Organization/d0894f6b-78d7-338d-82ad-b63de4d40014"
 			}
 		],
 		"purposeOfUse": [],
 		"category": [],
 		"patientId": [
 			{
-				"value": "Patient/195308"
+				"value": "Patient/cfsb1699034947598"
 			}
 		],
 		"class": [],
@@ -36,7 +36,7 @@
 							]
 						},
 						"subject": {
-							"reference": "Patient/195308"
+							"reference": "Patient/cfsb1699034947598"
 						},
 						"issued": "2013-04-04T14:34:00+01:00",
 						"performer": [

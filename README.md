@@ -14,12 +14,12 @@ At a high level, FHIR Consent Service:
 
 # Roadmap
 
-| Version   | Expected Features                     |
-| ----      | ----                                  |
-| < 1 (Current)       | Initial alpha development of completely new TypeScript-based, stateless implementation of "patient-consent-consult" CDS Hook service as a reusable, containerized microservice. |
-| 1          | FHIR R5 and CDS Hooks v1/v2 compliance implementation with minimum necessary features applicable for [ASU SHARES](https://www.asushares.com) use cases and baseline performance measurements.|
-| 2          | Modular processing framework with new weighted classifier implementation.
-| 3+        | Context-based classification and additional advance implementation modules.
+| Version   | Expected Features                     | Status    |
+| ----      | ----                                  | ----      |
+| < 1 (Current)       | Initial alpha development of completely new TypeScript-based, stateless implementation of "patient-consent-consult" CDS Hook service as a reusable, containerized microservice. | Complete |
+| 1          | FHIR R5 and CDS Hooks v1/v2 compliance implementation with minimum necessary features applicable for [ASU SHARES](https://www.asushares.com) use cases and baseline performance measurements, including modular processing framework with new weighted classifier implementation. | Complete |
+| 2          | CQL-based classification module | In Progress |
+| 3+        | Context-based classification, LLM-based integrations, and additional advance implementation modules. | Future |
 
 # Running the Service with Docker/Podman/Kubernetes
 

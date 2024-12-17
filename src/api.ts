@@ -11,7 +11,7 @@ dotenv.config();
 
 const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
 
-import { AbstractSensitivityRuleProvider, DataSharingCDSHookRequest } from '@asushares/core';
+import { AbstractSensitivityRuleProvider, DataSharingCDSHookRequest, DataSharingEngineContext } from '@asushares/core';
 
 import { BundleEntry, Consent } from 'fhir/r5';
 
@@ -70,8 +70,8 @@ app.get('/cds-services', (req, res) => {
 
 });
 
-const custom_theshold_header = 'CDS-Confidence-Threshold'.toLowerCase();
-const redaction_enabled_header = 'CDS-Redaction-Enabled'.toLowerCase();
+const custom_theshold_header = DataSharingEngineContext.HEADER_CDS_CONFIDENCE_THRESHOLD.toLowerCase();
+const redaction_enabled_header = DataSharingEngineContext.HEADER_CDS_REDACTION_ENABLED.toLowerCase();
 
 app.post('/cds-services/patient-consent-consult', (req, res) => {
     // req.headers
@@ -103,7 +103,6 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         if (redaction_enabled) {
             console.log("Resource redaction: enabled");
         } else {
-            threshold = FileSystemCodeMatchingThesholdCDSHookEngine.DEFAULT_THRESHOLD;
             console.log('Resource redaction: disabled');
         }
 

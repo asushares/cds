@@ -7,6 +7,349 @@
 	},
 	"rules": [
 		{
+			"id": "leap-rule-demo",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "DEMO",
+					"display": "Demographics"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESDEMO",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "LP133912-8",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LA6256-7",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "54588-9",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-dia",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "DIA",
+					"display": "Diagnoses"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESDIA",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "199229001",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "282825002",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "698247007",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "59621000",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "410429000",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-dis",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "DIS",
+					"display": "Disabilities"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESDIS",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "LP74101-4",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "11331-6",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LA26867-4",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "406506008",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-gdis",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "GDIS",
+					"display": "Genetics"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESGDIS",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "912201000000104",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-disease",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "DISEASE",
+					"display": "Infectious diseases"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESDISEASE",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "402929007",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-drgis",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "DRGIS",
+					"display": "Medications"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESDRGIS",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "372671002",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "387494007",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "16403005",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "386858008",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "409226009",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-bh",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "MENCAT",
+					"display": "Mental Health"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESBH",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "13746004",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "64905009",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "47505003",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "35489007",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "33449004",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "65971000052100",
+							"confidence": 1.0
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-sex",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "SEX",
+					"display": "Sexual and Reproductive Health"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESSEX",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "75410-1",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "75666-8",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "leap-rule-social",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "SOCIAL",
+					"display": "Social Determinates of Health"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "SHARESSOCIAL",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "LP212149-1",
+							"confidence": 1.0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "414916001",
+							"confidence": 0.5
+						}
+					]
+				}
+			]
+		},
+		{
 			"id": "leap-rule-sud",
 			"basis": {
 				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
@@ -13417,344 +13760,6 @@
 						{
 							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
 							"code": "2588476",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-bh",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "BH",
-					"display": "Behavioral Health"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESBH",
-					"codes": [
-						{
-							"system": "http://snomed.info/sct",
-							"code": "13746004",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "64905009",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "47505003",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "35489007",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "33449004",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-demo",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "DEMO",
-					"display": "Demographics"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESDEMO",
-					"codes": [
-						{
-							"system": "http://loinc.org",
-							"code": "LP133912-8",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://loinc.org",
-							"code": "LA6256-7",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://loinc.org",
-							"code": "54588-9",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-dia",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "DIA",
-					"display": "Diagnoses"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESDIA",
-					"codes": [
-						{
-							"system": "http://snomed.info/sct",
-							"code": "199229001",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "282825002",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "698247007",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "59621000",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "410429000",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-dis",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "DIS",
-					"display": "Disabilities"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESDIS",
-					"codes": [
-						{
-							"system": "http://loinc.org",
-							"code": "LP74101-4",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://loinc.org",
-							"code": "11331-6",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://loinc.org",
-							"code": "LA26867-4",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "406506008",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-gdis",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "GDIS",
-					"display": "Genetics"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESGDIS",
-					"codes": [
-						{
-							"system": "http://snomed.info/sct",
-							"code": "912201000000104",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-disease",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "DISEASE",
-					"display": "Infectious diseases"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESDISEASE",
-					"codes": [
-						{
-							"system": "http://snomed.info/sct",
-							"code": "402929007",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-drgis",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "DRGIS",
-					"display": "Medications"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESDRGIS",
-					"codes": [
-						{
-							"system": "http://snomed.info/sct",
-							"code": "372671002",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "387494007",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "16403005",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "386858008",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "409226009",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-sex",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "SEX",
-					"display": "Sexual and Reproductive Health"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESSEX",
-					"codes": [
-						{
-							"system": "http://loinc.org",
-							"code": "75410-1",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://loinc.org",
-							"code": "75666-8",
-							"confidence": 0.5
-						}
-					]
-				}
-			]
-		},
-		{
-			"id": "leap-rule-social",
-			"basis": {
-				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-				"code": "42CFRPart2",
-				"display": "42 CFR Part2"
-			},
-			"labels": [
-				{
-					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-					"code": "SOCIAL",
-					"display": "Social Determinates of Health"
-				}
-			],
-			"codeSets": [
-				{
-					"groupID": "SHARESSOCIAL",
-					"codes": [
-						{
-							"system": "http://loinc.org",
-							"code": "LP212149-1",
-							"confidence": 1.0
-						},
-						{
-							"system": "http://snomed.info/sct",
-							"code": "414916001",
 							"confidence": 0.5
 						}
 					]

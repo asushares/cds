@@ -117,6 +117,8 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
                         console.log(JSON.stringify(consents));
                         let card = proc.process(consents, data.context);
                         // console.log(JSON.stringify(entries.map(n => { n.resource! })));
+                        // console.log('Response card:');                        
+                        // console.log(card);                        
                         res.status(200).send(JSON.stringify(card, null, "\t"));
                     } else {
                         res.status(502).send({ message: 'No Consent documents or other error processing request. See logs.' });

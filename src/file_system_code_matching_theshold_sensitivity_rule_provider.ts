@@ -18,25 +18,28 @@ export class FileSystemCodeMatchingThresholdSensitivityRuleProvider extends Abst
     // static DEFAULT_RULES_FILE = path.join(__dirname, 'data', 'sensitivity-rules.local.json');
     static DEFAULT_RULES_FILE = path.join(__dirname, 'data', 'sensitivity-rules.json');
 
-    constructor(public rulesFilePath: string) {
+    constructor(protected rulesFilePath: string) {
         super();
+        this.reinitialize();
     }
 
-    reinitialize() {
-        console.log('Reinitializing rules from ' + this.rulesFilePath);
-        this.rulesFileJSON = this.loadRulesFile();
-        this.rules = this.rulesFileJSON.rules.map((n: any) => { return Object.assign(new Rule, n) });
-        console.log('Loaded rules:');
-        this.rules.forEach(r => {
-            console.log(`\t${r.id} : (${r.allCodeObjects().length} total codes, Basis: ${r.basis.display}, Labels: ${r.labels.map(l => { return l.code + ' - ' + l.display }).join(', ')})`);
-        });
-    }
+    // reinitialize() {
+    //     console.log('Reinitializing rules from ' + this.rulesFilePath);
+    //     this.rulesFileJSON = this.loadRulesFile();
+    //     this.rules = this.rulesFileJSON.rules.map((n: any) => { return Object.assign(new Rule, n) });
+    //     console.log('Loaded rules:');
+    //     this.rules.forEach(r => {
+    //         console.log(`\t${r.id} : (${r.allCodeObjects().length} total codes, Basis: ${r.basis.display}, Labels: ${r.labels.map(l => { return l.code + ' - ' + l.display }).join(', ')})`);
+    //     });
+    // }
 
-    override  rulesSchema() {
+      rulesSchema() {
         return JSON.parse(fs.readFileSync(FileSystemCodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE).toString());
     }
 
-    override    loadRulesFile() {
+    loadRulesFile() {   
+        console.log('Loading rules from ' + this.rulesFilePath);
+            
         let content = fs.readFileSync(this.rulesFilePath).toString();
         // console.log(content);        
         return JSON.parse(content);

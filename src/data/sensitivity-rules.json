@@ -1205,6 +1205,41 @@
 			],
 			"codeSets": [
 				{
+					"groupID": "custom",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "LP32828-3",
+							"confidence": 0.8
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP32820-0",
+							"confidence": 0.8
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP32826-7",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "72401-3",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "108419004",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "321294008",
+							"confidence": 0.5
+						}
+					]
+				},
+				{
 					"groupID": "alfentanil",
 					"codes": [
 						{
@@ -14648,6 +14683,66 @@
 							"system": "http://snomed.info/sct",
 							"code": "33449004",
 							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "65971000052100",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "58214004",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "73595000",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "7011001",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "6471006",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "47295007",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "191667009",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "321294008",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "375509004",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP32834-1",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP75851-3",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "1855002",
+							"confidence": 1
 						}
 					]
 				}
@@ -14907,6 +15002,16 @@
 							"system": "http://loinc.org",
 							"code": "75666-8",
 							"confidence": 0.5
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP72727-8",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "LP231632-3",
+							"confidence": 1
 						}
 					]
 				}

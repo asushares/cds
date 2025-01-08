@@ -593,6 +593,11 @@
 							"system": "http://loinc.org",
 							"code": "99999-9",
 							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "19359-9",
+							"confidence": 1
 						}
 					]
 				},

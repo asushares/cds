@@ -1,13 +1,14 @@
 // Author: Preston Lee
 
 const request = require('supertest');
+import { DataSharingCDSHookRequest } from '@asushares/core';
 // const assert = require('assert');
 // import request from 'supertest';
 // import assert from 'assert';
 // import supertest from "@types/supertest";
 
 import app from '../src/api';
-import { PatientConsentHookRequest } from '@asushares/core';
+// import { PatientConsentHookRequest } from '@asushares/core';
 
 describe('GET /', () => {
 
@@ -70,7 +71,7 @@ describe('POST /cds-services/patient-consent-consult', () => {
     });
 
     test('it should not accept', done => {
-        let data = new PatientConsentHookRequest();
+        let data = new DataSharingCDSHookRequest();
         data.context.patientId =[{value: '2321'}];
         data.context.category = [{system: 'http://terminology.hl7.org/CodeSystem/consentscope', code: 'patient-privacy'}];
         request(app)

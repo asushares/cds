@@ -40,6 +40,7 @@ app.use(cors());
 let rules_file_path = FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE;
 let cds_hooks_validator = new FileSystemDataSharingCDSHookValidator();
 
+console.log('Rules will be loaded from', rules_file_path);
 let rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
 
 // Root URL

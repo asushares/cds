@@ -22,7 +22,7 @@ export class FHIRAuditService {
             ae.contained = [engineContext.content];
         }
         // console.log(ae);        
-        return axios.post(process.env.FHIR_BASE_URL + '/AuditEvent', ae);
+        return axios.post(process.env.CDS_FHIR_BASE_URL + '/AuditEvent', ae);
     }
 
 }

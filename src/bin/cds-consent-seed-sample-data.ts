@@ -6,11 +6,11 @@
 
 // console.log("SHARES CDS Sample Data Loader");
 
-// const base = process.env.FHIR_BASE_URL;
+// const base = process.env.CDS_FHIR_BASE_URL;
 // if (base) {
-//     console.log('Using FHIR_BASE_URL: ' + base);
+//     console.log('Using CDS_FHIR_BASE_URL: ' + base);
 // } else {
-//     console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
+//     console.error('CDS_FHIR_BASE_URL must be set. Exiting, sorry!');
 //     process.exit(1);
 // }
 

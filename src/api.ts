@@ -21,14 +21,14 @@ import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_s
 import Ajv from 'ajv';
 
 
-if (process.env.FHIR_BASE_URL) {
-    console.log('Using FHIR_BASE_URL ' + process.env.FHIR_BASE_URL);
+if (process.env.CDS_FHIR_BASE_URL) {
+    console.log('Using CDS_FHIR_BASE_URL ' + process.env.CDS_FHIR_BASE_URL);
 } else {
-    console.error('FHIR_BASE_URL must be set. Exiting, sorry!');
+    console.error('CDS_FHIR_BASE_URL must be set. Exiting, sorry!');
     process.exit(1);
 }
-if (!process.env.ADMINISTRATOR_PASSWORD) {
-    console.error('ADMINISTRATOR_PASSWORD must be set. Exiting, sorry!');
+if (!process.env.CDS_ADMINISTRATOR_PASSWORD) {
+    console.error('CDS_ADMINISTRATOR_PASSWORD must be set. Exiting, sorry!');
     process.exit(1);
 }
 const app = express();
@@ -159,7 +159,7 @@ app.get('/data/sensitivity-rules.json', (req, res) => {
     res.status(200).send(rule_provider.loadRulesFile());
 });
 
-app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.ADMINISTRATOR_PASSWORD } }), (req, res) => {
+app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.CDS_ADMINISTRATOR_PASSWORD } }), (req, res) => {
     // console.log(req.body);    
      const results = rule_provider.validateRuleFile(req.body);
     if (results) {

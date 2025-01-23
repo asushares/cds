@@ -13,7 +13,7 @@ export class FileSystemCodeMatchingThesholdCDSHookEngine extends AbstractDataSha
     static DEFAULT_THRESHOLD = 0.0;
 
     async findConsents(subjects: SystemValue[], categories: SystemCode[]) {
-        let url = process.env.FHIR_BASE_URL + '/Consent';
+        let url = process.env.CDS_FHIR_BASE_URL + '/Consent';
         // console.log(JSON.stringify(categories));        
         // console.log(subjects.map(n => { return 'subject=' + n.value }).join('&'));
         let params = [...subjects.map(n => { return 'subject=' + n.value }), ...categories.map(n => { return 'category=' + n.code })];

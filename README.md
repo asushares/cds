@@ -29,8 +29,8 @@ At a high level, FHIR Consent Service:
 If you have your own FHIR R5 server, either set the following environment variables or create a `.env` file with KEY=value definitions for the following:
 
 ```bash
-FHIR_BASE_URL=https://your_fhir_server_url
-ADMINISTRATOR_PASSWORD=password_for_post_endpoints
+CDS_FHIR_BASE_URL=https://your_fhir_server_url
+CDS_ADMINISTRATOR_PASSWORD=password_for_post_endpoints
 ```
 
 Then run the latest SHARES Consent Service build:
@@ -49,7 +49,7 @@ If you do not have a server, you may use the  must have a backend FHIR server, s
 
 ## Step 2: Load Seed Data
 
-TODO document!
+TODO document using the SHARES Stack Controller!
 
 ## Step 3: Build Your Consent Documents
 

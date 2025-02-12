@@ -1,6 +1,6 @@
 {
     "name": "@asushares/cds",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "description": "ASU SHARES FHIR Consent CDS Hooks services.",
     "scripts": {
         "start": "npm run build && npx node build/server.js",
@@ -25,7 +25,7 @@
     },
     "homepage": "https://github.com/asushares/cds#readme",
     "dependencies": {
-        "@asushares/core": "^2.8.1",
+        "@asushares/core": "^2.10.2",
         "ajv": "^8.17.1",
         "axios": "^1.7.9",
         "cors": "^2.8.5",

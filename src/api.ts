@@ -19,6 +19,7 @@ import { FileSystemCodeMatchingThesholdCDSHookEngine } from './patient_consent_c
 import { FileSystemDataSharingCDSHookValidator } from './file_system_data_sharing_cds_hook_validator';
 import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_system_code_matching_theshold_sensitivity_rule_provider';
 import Ajv from 'ajv';
+import path from 'path';
 
 
 if (process.env.CDS_FHIR_BASE_URL) {
@@ -41,7 +42,7 @@ let rules_file_path = FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEF
 let cds_hooks_validator = new FileSystemDataSharingCDSHookValidator();
 
 console.log('Rules will be loaded from', rules_file_path);
-let rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
+let default_rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
 
 // Root URL
 app.get('/', (req, res) => {
@@ -73,6 +74,8 @@ app.get('/cds-services', (req, res) => {
 
 const custom_theshold_header = DataSharingEngineContext.HEADER_CDS_CONFIDENCE_THRESHOLD.toLowerCase();
 const redaction_enabled_header = DataSharingEngineContext.HEADER_CDS_REDACTION_ENABLED.toLowerCase();
+const create_audit_event_header = DataSharingEngineContext.HEADER_CDS_CREATE_AUDIT_EVENT_ENABLED.toLowerCase();
+const rules_file_header = DataSharingEngineContext.HEADER_CDS_RULES_FILE.toLowerCase();
 
 app.post('/cds-services/patient-consent-consult', (req, res) => {
     // req.headers
@@ -83,14 +86,21 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
     // cds_hooks_validator.requestValidator(req.body);
     // const results =  Ajv. cds_hooks_validator.requestValidator.errors;
     // console.log("Results:" + results);
-    
-    if (results) {        
-        res.status(400).json({html: results});
+
+    if (results) {
+        res.status(400).json({ html: results });
     } else {
         let data: DataSharingCDSHookRequest = req.body;
         let subjects = (data.context.patientId || []);//.map(n => {'Patient/' + n.});
         let categories = data.context.category || [];
         let content = data.context.content;
+
+
+        let redaction_enabled: boolean = (req.headers[redaction_enabled_header] == 'true' || req.headers[redaction_enabled_header] == null);
+        console.log("Resource redaction:", redaction_enabled);
+
+        let create_audit_event: boolean = (req.headers[create_audit_event_header] == 'true' || req.headers[create_audit_event_header] == null);
+        console.log('Create audit event:', create_audit_event);
 
         let threshold: number = Number(req.headers[custom_theshold_header]);
         if (threshold) {
@@ -100,14 +110,18 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
             console.log('Using default confidence threshold: ' + threshold);
         }
 
-        let redaction_enabled: boolean = (req.headers[redaction_enabled_header] == 'true' || req.headers[redaction_enabled_header] == null);
-        if (redaction_enabled) {
-            console.log("Resource redaction: enabled");
+        let rules_file = req.headers[rules_file_header]?.toString();
+        let rule_provider = default_rule_provider;
+        if (rules_file == null) {
+            // Use the default rules provider.
         } else {
-            console.log('Resource redaction: disabled');
+            console.log("Using user-requested rules file:", rules_file);
+            rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(
+                path.join(FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_DIRECTORY, rules_file));
         }
 
-        let proc = new FileSystemCodeMatchingThesholdCDSHookEngine(rule_provider, threshold, redaction_enabled);
+
+        let proc = new FileSystemCodeMatchingThesholdCDSHookEngine(rule_provider, threshold, redaction_enabled, create_audit_event);
         proc.findConsents(subjects, categories).then(resp => {
             resp.subscribe({
                 next: n => {
@@ -156,16 +170,16 @@ app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(rule_provider.loadRulesFile());
+    res.status(200).send(default_rule_provider.loadRulesFile());
 });
 
 app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.CDS_ADMINISTRATOR_PASSWORD } }), (req, res) => {
     // console.log(req.body);    
-     const results = rule_provider.validateRuleFile(req.body);
+    const results = default_rule_provider.validateRuleFile(req.body);
     if (results) {
         res.status(400).json({ message: "Invalid request.", errors: results });
     } else {
-        rule_provider.updateRulesFile(req.body);
+        default_rule_provider.updateRulesFile(req.body);
         console.log('Rules file has been updated.');
         res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
     }

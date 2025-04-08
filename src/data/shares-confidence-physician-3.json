@@ -1,0 +1,1107 @@
+{
+	"$schema": "https://cds-hooks.sandbox.asushares.com/schemas/sensitivity-rules.schema.json",
+	"name": "SHARES_CONFIDENCE_PHYSICIAN_3",
+	"updated_at": "Not Set",
+	"settings": {
+		"editable": true
+	},
+	"rules": [
+		{
+			"id": "shares-confidence-physician-3",
+			"basis": {
+				"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+				"code": "42CFRPart2",
+				"display": "42 CFR Part2"
+			},
+			"labels": [
+				{
+					"system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+					"code": "SUD",
+					"display": "Substance Use Disorder Associated Codes (SUD)"
+				}
+			],
+			"codeSets": [
+				{
+					"groupID": "LOINC",
+					"codes": [
+						{
+							"system": "http://loinc.org",
+							"code": "99999-11",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "26464-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5799-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "32693-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2514-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5797-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "75689-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "50190-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "80381-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-7",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "75622-1",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "57905-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24360-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "4548-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5794-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "718-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "4544-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "55405-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "88262-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "25428-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5792-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2339-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24339-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24336-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "18752-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "777-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "789-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "26453-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "713-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "711-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "6690-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "57698-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "731-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "736-9",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "32623-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "32207-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "44249-1",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2746-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5803-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2744-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "6298-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "59408-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2708-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2705-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2703-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-1",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "34533-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5802-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-0",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5804-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "770-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "751-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "20454-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "34528-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "71425-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-8",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "59453-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5905-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "742-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-5",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "14959-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "92143-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "8478-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "21377-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "93124-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "65750-2",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "33756-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2027-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2106-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2069-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "89577-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24467-3",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "69742-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "58410-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24357-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2021-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2019-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "2947-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "57023-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "1960-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "20565-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "630-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "85354-9",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24321-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "6299-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "51990-0",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24356-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "704-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "600-7",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5770-3",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "20505-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "14627-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "49765-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "3173-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "32167-9",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5767-9",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-3",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "3184-9",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5811-5",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "82666-9",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "8462-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "72109-2",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "8480-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-2",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "82335-1",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "38483-4",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "72166-2",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-4",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "706-2",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-6",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-10",
+							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "24323-8",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "5778-6",
+							"confidence": 0
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "99999-9",
+							"confidence": 1
+						}
+					]
+				},
+				{
+					"groupID": "SNOMED",
+					"codes": [
+						{
+							"system": "http://snomed.info/sct",
+							"code": "167271000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "33633005",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "167252002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "268556000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "302761001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "117010004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171128005",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "395123002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "1.12001E+14",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "110467000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "57617002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "167226008",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "412809002",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "710081004",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "266753000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "225323000",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "449868002",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "252482003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "252160004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "86964003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "269828009",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "82078001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "28163009",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "71493000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "116863004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "252480006",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "866146005",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "104308009",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "308113006",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "410410006",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "24623002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "104435004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "713106006",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171126009",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "866148006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "1.09399E+16",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "169690007",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "267064002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "69212005",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "108243003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "444260001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "165355002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "446987006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "443529005",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "4.54711E+14",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "715252007",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171207006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "6525002",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "413473000",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "3.71361E+14",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "9564003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "26604007",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "310861008",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "76746007",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "44608003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "30088009",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171231001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "868187001",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "763302001",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "4.28211E+14",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "169673001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "312404004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "395142003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "24165007",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "7200002",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "226138001",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "275833003",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "67799006",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "14768001",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "60112009",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "61480009",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "113076002",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "5602001",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "60151004",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "1.12011E+14",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "361055000",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "385892002",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "9002005",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "266707007",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "419822006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "180207008",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "15220000",
+							"confidence": 0
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "31676001",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "55680006",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "413107006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "104375008",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171122006",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "56876005",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "313613002",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "171121004",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "165829005",
+							"confidence": 0.5
+						}
+					]
+				},
+				{
+					"groupID": "RXNORM",
+					"codes": [
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "198031",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "389221",
+							"confidence": 0
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1191222",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "864718",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "864706",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "351266",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1483744",
+							"confidence": 1
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1366343",
+							"confidence": 0
+						}
+					]
+				}
+			]
+		}
+	]
+}

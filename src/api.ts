@@ -38,11 +38,13 @@ const app = express();
 app.use(express.json({ limit: '100mb' }));
 app.use(cors());
 
-let rules_file_path = FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE;
+let rules_file_path = FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_PATH;
 let cds_hooks_validator = new FileSystemDataSharingCDSHookValidator();
 
 console.log('Rules will be loaded from', rules_file_path);
-let default_rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
+// let default_rule_provider = 
+const rule_provider_cache: { [key: string]: AbstractSensitivityRuleProvider } = {};
+rule_provider_cache[FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_NAME] = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(rules_file_path);
 
 // Root URL
 app.get('/', (req, res) => {
@@ -111,41 +113,49 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
         }
 
         let rules_file = req.headers[rules_file_header]?.toString();
-        let rule_provider = default_rule_provider;
+        let rule_provider = rule_provider_cache[FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_NAME];
         if (rules_file == null) {
             // Use the default rules provider.
         } else {
             console.log("Using user-requested rules file:", rules_file);
-            rule_provider = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(
-                path.join(FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_DIRECTORY, rules_file));
+            if (rule_provider_cache[rules_file] == null) {
+                rule_provider_cache[rules_file] = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(
+                    path.join(FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_DIRECTORY, rules_file));
+                console.log('New rule provider loaded and cached for', rules_file);
+            }
+            rule_provider = rule_provider_cache[rules_file];
         }
 
 
         let proc = new FileSystemCodeMatchingThesholdCDSHookEngine(rule_provider, threshold, redaction_enabled, create_audit_event);
-        proc.findConsents(subjects, categories).then(resp => {
-            resp.subscribe({
-                next: n => {
-                    const entries: BundleEntry<Consent>[] | undefined = n.entry;
-                    if (entries) {
-                        let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
-                        console.log('Consents returned from FHIR server:');
-                        console.log(JSON.stringify(consents));
-                        let card = proc.process(consents, data.context);
-                        // console.log(JSON.stringify(entries.map(n => { n.resource! })));
-                        // console.log('Response card:');                        
-                        // console.log(card);                        
-                        res.status(200).send(JSON.stringify(card, null, "\t"));
-                    } else {
-                        res.status(502).send({ message: 'No Consent documents or other error processing request. See logs.' });
+        if (data.context.consent != null && data.context.consent.length > 0) {
+            console.log("Consent(s) overrides in request context will forgo FHIR server query.");
+            let card = proc.process(data.context.consent, data.context);
+            res.status(200).send(JSON.stringify(card, null, "\t"));
+        } else {
+            console.log('Querying FHIR server for Consent document(s).');
+            proc.findConsents(subjects, categories).then(resp => {
+                resp.subscribe({
+                    next: n => {
+                        const entries: BundleEntry<Consent>[] | undefined = n.entry;
+                        if (entries) {
+                            let consents: Consent[] = entries.map(n => { return n.resource! }) as unknown as Consent[];
+                            console.log('Consents returned from FHIR server:');
+                            console.log(JSON.stringify(consents));
+                            let card = proc.process(consents, data.context);
+                            res.status(200).send(JSON.stringify(card, null, "\t"));
+                        } else {
+                            res.status(502).send({ message: 'No Consent documents or other error processing request. See logs.' });
+                        }
+                    }, error: e => {
+                        let msg = 'Error loading Consent documents.';
+                        console.error(msg);
+                        res.status(502).send({ message: msg, details: e });
                     }
-                }, error: e => {
-                    let msg = 'Error loading Consent documents.';
-                    console.error(msg);
-                    res.status(502).send({ message: msg, details: e });
-                }
+                });
+                // console.log(resp.data);
             });
-            // console.log(resp.data);
-        });
+        }
 
         // console.log(data.context);
         // res.status(200).send({ all: 'good' });
@@ -170,16 +180,18 @@ app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {
-    res.status(200).send(default_rule_provider.loadRulesFile());
+    res.status(200).send(rule_provider_cache[FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_NAME].loadRulesFile());
 });
 
 app.post('/data/sensitivity-rules.json', basicAuth({ users: { administrator: process.env.CDS_ADMINISTRATOR_PASSWORD } }), (req, res) => {
     // console.log(req.body);    
-    const results = default_rule_provider.validateRuleFile(req.body);
+    const results = rule_provider_cache[FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_NAME].validateRuleFile(req.body);
     if (results) {
         res.status(400).json({ message: "Invalid request.", errors: results });
     } else {
-        default_rule_provider.updateRulesFile(req.body);
+        // FIXME Probably shouldn't cast like this but it's a quick fix.
+        let rp = rule_provider_cache[FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_NAME] as FileSystemCodeMatchingThresholdSensitivityRuleProvider;
+        rp.updateRulesFile(req.body);
         console.log('Rules file has been updated.');
         res.status(200).json({ message: 'File updated successfully. The engine has been reinitialized accordingly and rules are already in effect.' });
     }

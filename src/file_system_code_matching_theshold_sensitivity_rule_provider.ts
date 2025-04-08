@@ -17,7 +17,8 @@ export class FileSystemCodeMatchingThresholdSensitivityRuleProvider extends Abst
     // public rulesFilePath = AbstractSensitivityRuleProvider.SENSITIVITY_RULES_JSON_FILE_DEFAULT;
     // static DEFAULT_RULES_FILE = path.join(__dirname, 'data', 'sensitivity-rules.local.json');
     static DEFAULT_RULES_DIRECTORY = path.join(__dirname, 'data');
-    static DEFAULT_RULES_FILE = path.join(this.DEFAULT_RULES_DIRECTORY, 'sensitivity-rules.json');
+    static DEFAULT_RULES_FILE_NAME = 'sensitivity-rules.json';
+    static DEFAULT_RULES_FILE_PATH = path.join(this.DEFAULT_RULES_DIRECTORY, this.DEFAULT_RULES_FILE_NAME);
 
     constructor(protected rulesFilePath: string) {
         super();

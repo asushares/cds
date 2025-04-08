@@ -1,3 +1,3 @@
 import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from "../file_system_code_matching_theshold_sensitivity_rule_provider";
 
-let rp = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE);
+let rp = new FileSystemCodeMatchingThresholdSensitivityRuleProvider(FileSystemCodeMatchingThresholdSensitivityRuleProvider.DEFAULT_RULES_FILE_PATH);

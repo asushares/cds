@@ -1,6 +1,6 @@
 {
     "name": "@asushares/cds",
-    "version": "2.4.2",
+    "version": "2.4.3",
     "description": "ASU SHARES FHIR Consent CDS Hooks services.",
     "scripts": {
         "start": "npm run build && npx node build/server.js",
@@ -27,23 +27,23 @@
     "dependencies": {
         "@asushares/core": "^2.12.2",
         "ajv": "^8.17.1",
-        "axios": "^1.8.4",
+        "axios": "^1.9.0",
         "cors": "^2.8.5",
         "dotenv": "^16.5.0",
         "express": "^5.1.0",
         "express-basic-auth": "^1.2.1",
         "jsonpath-plus": "^10.3.0",
-        "nodemon": "^3.1.9",
+        "nodemon": "^3.1.10",
         "rxjs": "^7.8.2",
         "statman": "^1.9.1",
-        "supertest": "^7.1.0",
-        "ts-jest": "^29.3.2",
+        "supertest": "^7.1.1",
+        "ts-jest": "^29.3.3",
         "ts-node": "^10.9.2",
         "typescript": "^5.8",
         "uuid": "^11.1.0"
     },
     "devDependencies": {
-        "@types/cors": "^2.8.17",
+        "@types/cors": "^2.8.18",
         "@types/express": "^5.0.1",
         "@types/fhir": "^0.0.41",
         "@types/jest": "^29.5.14",

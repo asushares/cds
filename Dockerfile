@@ -16,4 +16,4 @@ RUN rm -rf src/
 
 # Run express as-is
 EXPOSE 3000
-CMD node build/server.js
+CMD ["node", "build/server.js"]

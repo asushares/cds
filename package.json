@@ -37,14 +37,14 @@
         "rxjs": "^7.8.2",
         "statman": "^1.9.1",
         "supertest": "^7.1.1",
-        "ts-jest": "^29.3.3",
+        "ts-jest": "^29.3.4",
         "ts-node": "^10.9.2",
         "typescript": "^5.8",
         "uuid": "^11.1.0"
     },
     "devDependencies": {
         "@types/cors": "^2.8.18",
-        "@types/express": "^5.0.1",
+        "@types/express": "^5.0.2",
         "@types/fhir": "^0.0.41",
         "@types/jest": "^29.5.14",
         "@types/uuid": "^10.0.0"

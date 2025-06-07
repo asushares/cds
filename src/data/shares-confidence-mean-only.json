@@ -593,6 +593,11 @@
 							"system": "http://loinc.org",
 							"code": "99999-9",
 							"confidence": 1
+						},
+						{
+							"system": "http://loinc.org",
+							"code": "44249-1",
+							"confidence": 0
 						}
 					]
 				},
@@ -1053,6 +1058,36 @@
 							"system": "http://snomed.info/sct",
 							"code": "165829005",
 							"confidence": 0.3
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "313071005",
+							"confidence": 1
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "408935001",
+							"confidence": 0.333
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "408936000",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "408936000",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "408919008",
+							"confidence": 0.333
+						},
+						{
+							"system": "http://snomed.info/sct",
+							"code": "52052004",
+							"confidence": 0.5
 						}
 					]
 				},
@@ -1098,6 +1133,71 @@
 							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
 							"code": "1366343",
 							"confidence": 0
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1860491",
+							"confidence": 0.667
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1728805",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "245134",
+							"confidence": 0.667
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1049504",
+							"confidence": 0.667
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1860154",
+							"confidence": 0.667
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "993770",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "856987",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "857005",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1049625",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1049221",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "861467",
+							"confidence": 0.667
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "835603",
+							"confidence": 0.5
+						},
+						{
+							"system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+							"code": "1043400",
+							"confidence": 0.5
 						}
 					]
 				}

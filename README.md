@@ -1,5 +1,7 @@
 # ASU SHARES FHIR Consent Labeling & Redaction CDS Hooks Services
 
+[![Build Status](https://ci.asushares.com/api/badges/asushares/cds/status.svg)](https://ci.asushares.com/asushares/cds)
+
 The ASU SHARES FHIR Consent Labeling & Redaction Service from [ASU SHARES](https://www.asushares.com) is a reference implementation providing FHIR-based healthcare data sharing determination decisions and content data redaction functions based on FHIR R5 and CDS Hooks v1 and v2. Long term, we intend to settle on FHIR R6 once the specification stabilizes.
 
 SHARES FHIR Consent Labeling & Redaction Service is part of a U.S. National Institute of Health (NIH) project funded through August, 2028. Technical execution of the Arizona State University (ASU) "Substance use HeAlth REcord Sharing" (SHARES) grant is led by co-investigator Dr. Preston Lee at Arizona State University under principal investigator Dr. Adela Grando. See the [ASU SHARES Team](https://www.asushares.com/team) for a full list of stakeholders.

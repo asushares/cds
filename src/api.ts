@@ -6,18 +6,22 @@ import express from "express";
 import basicAuth from 'express-basic-auth';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
 dotenv.config();
 
-
-const my_version = JSON.parse(fs.readFileSync(__dirname + '/../package.json').toString()).version;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const my_version = JSON.parse(fs.readFileSync(join(__dirname, '..', 'package.json')).toString()).version;
 
 import { AbstractSensitivityRuleProvider, DataSharingCDSHookRequest, DataSharingEngineContext } from '@asushares/core';
 
 import { BundleEntry, Consent } from 'fhir/r5';
 
-import { FileSystemCodeMatchingThesholdCDSHookEngine } from './patient_consent_consult_hook_processors/file_system_code_matching_theshold_cds_hook_engine';
-import { FileSystemDataSharingCDSHookValidator } from './file_system_data_sharing_cds_hook_validator';
-import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_system_code_matching_theshold_sensitivity_rule_provider';
+import { FileSystemCodeMatchingThesholdCDSHookEngine } from './patient_consent_consult_hook_processors/file_system_code_matching_theshold_cds_hook_engine.js';
+import { FileSystemDataSharingCDSHookValidator } from './file_system_data_sharing_cds_hook_validator.js';
+import { FileSystemCodeMatchingThresholdSensitivityRuleProvider } from './file_system_code_matching_theshold_sensitivity_rule_provider.js';
 import Ajv from 'ajv';
 import path from 'path';
 
@@ -168,15 +172,33 @@ app.post('/cds-services/patient-consent-consult', (req, res) => {
 
 
 app.get('/schemas/patient-consent-consult-hook-request.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(FileSystemDataSharingCDSHookValidator.REQUEST_SCHEMA_FILE));
+    try {
+        const content = fs.readFileSync(FileSystemDataSharingCDSHookValidator.REQUEST_SCHEMA_FILE);
+        res.status(200).send(content);
+    } catch (error) {
+        console.error('Error reading request schema file:', error);
+        res.status(500).json({ error: 'Failed to read schema file' });
+    }
 });
 
 app.get('/schemas/patient-consent-consult-hook-response.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(FileSystemDataSharingCDSHookValidator.RESPONSE_SCHEMA_FILE));
+    try {
+        const content = fs.readFileSync(FileSystemDataSharingCDSHookValidator.RESPONSE_SCHEMA_FILE);
+        res.status(200).send(content);
+    } catch (error) {
+        console.error('Error reading response schema file:', error);
+        res.status(500).json({ error: 'Failed to read schema file' });
+    }
 });
 
 app.get('/schemas/sensitivity-rules.schema.json', (req, res) => {
-    res.status(200).send(fs.readFileSync(FileSystemCodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE));
+    try {
+        const content = fs.readFileSync(FileSystemCodeMatchingThresholdSensitivityRuleProvider.SENSITIVITY_RULES_JSON_SCHEMA_FILE);
+        res.status(200).send(content);
+    } catch (error) {
+        console.error('Error reading sensitivity rules schema file:', error);
+        res.status(500).json({ error: 'Failed to read schema file' });
+    }
 });
 
 app.get('/data/sensitivity-rules.json', (req, res) => {

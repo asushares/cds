@@ -6,7 +6,7 @@ import { defer, map } from 'rxjs';
 import { Bundle, Coding, Consent } from 'fhir/r5';
 
 import { AbstractDataSharingEngine, AbstractSensitivityRuleProvider, DataSharingEngineContext, SystemCode, SystemValue } from '@asushares/core';
-import { FHIRAuditService } from '../audit/fhir_audit_service';
+import { FHIRAuditService } from '../audit/fhir_audit_service.js';
 
 export class FileSystemCodeMatchingThesholdCDSHookEngine extends AbstractDataSharingEngine {
 

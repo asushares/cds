@@ -1,6 +1,6 @@
 // Author: Preston Lee
 
-import api from './api';
+import api from './api.js';
 
 const port = 3000;
 api.listen(port, () => {
